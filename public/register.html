@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register - Bursa Talenta</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Figtree', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-sans text-gray-900 antialiased bg-white">
+
+    <div class="min-h-screen mt-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+                <!-- Left Side - Illustration -->
+                <div class="flex flex-col justify-center items-start py-8 h-full">
+                    <div class="max-w-lg">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2 leading-relaxed">
+                            Mari bergabung dengan<br>
+                            Bursa Talenta!
+                        </h1>
+
+                        <!-- Main Illustration Image -->
+                        <div class="flex justify-center">
+                            <!-- Placeholder image - replace with actual image path -->
+                            <div class="w-full max-w-md h-64 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-6xl mb-4">🎯</div>
+                                    <p class="text-gray-600 text-sm">Bursa Talenta Illustration</p>
+                                </div>
+                            </div>
+                            <!-- Uncomment and replace with actual image when available -->
+                            <!-- <img src="assets/bursa-talenta.png" alt="Bursa Talenta Illustration"
+                                class="w-full max-w-md h-auto object-contain"> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Form -->
+                <div class="flex flex-col justify-center items-center py-8 h-full">
+                    <div class="w-full max-w-sm">
+                        <!-- Form Header -->
+                        <div class="mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-1">Daftar dulu yuk!</h2>
+                            <p class="text-sm text-gray-500">Silahkan isi form berikut</p>
+                        </div>
+
+                        <!-- Session Status (placeholder for success messages) -->
+                        <div id="sessionStatus" class="mb-4 hidden">
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                                <span id="statusMessage"></span>
+                            </div>
+                        </div>
+
+                        <!-- Error Messages (placeholder) -->
+                        <div id="errorMessages" class="mb-4 hidden">
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                                <ul id="errorList"></ul>
+                            </div>
+                        </div>
+
+                        <form id="registerForm" class="space-y-4" onsubmit="handleRegister(event)">
+                            <!-- Email Address -->
+                            <div>
+                                <input id="email" 
+                                       type="email" 
+                                       name="email" 
+                                       required 
+                                       autocomplete="username"
+                                       placeholder="Email"
+                                       class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-gray-400 text-gray-700 text-sm"
+                                />
+                                <div id="emailError" class="mt-1 text-xs text-red-600 hidden"></div>
+                            </div>
+
+                            <!-- Name -->
+                            <div>
+                                <input id="name" 
+                                       type="text" 
+                                       name="name" 
+                                       required 
+                                       autofocus 
+                                       autocomplete="name"
+                                       placeholder="Nama"
+                                       class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-gray-400 text-gray-700 text-sm"
+                                />
+                                <div id="nameError" class="mt-1 text-xs text-red-600 hidden"></div>
+                            </div>
+
+                            <!-- Password -->
+                            <div>
+                                <input id="password" 
+                                       type="password" 
+                                       name="password" 
+                                       required 
+                                       autocomplete="new-password"
+                                       placeholder="Password"
+                                       class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-gray-400 text-gray-700 text-sm"
+                                />
+                                <div id="passwordError" class="mt-1 text-xs text-red-600 hidden"></div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div>
+                                <input id="password_confirmation" 
+                                       type="password" 
+                                       name="password_confirmation" 
+                                       required 
+                                       autocomplete="new-password"
+                                       placeholder="Konfirmasi Password"
+                                       class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-gray-400 text-gray-700 text-sm"
+                                />
+                                <div id="passwordConfirmationError" class="mt-1 text-xs text-red-600 hidden"></div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="pt-3">
+                                <button type="submit" 
+                                        id="submitBtn"
+                                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors text-sm">
+                                    <span id="submitText">Daftar</span>
+                                    <span id="submitLoading" class="hidden">
+                                        <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Memproses...
+                                    </span>
+                                </button>
+                            </div>
+
+                            <!-- Terms and Login Link -->
+                            <div class="text-center pt-3 space-y-2">
+                                <p class="text-sm text-gray-600">
+                                    Ingin daftar sebagai penyedia kerja? <a href="provider-register.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Daftar di sini</a>
+                                </p>
+                                <p class="text-sm text-gray-600">
+                                    Sudah mempunyai akun? <a href="login.html" class="text-indigo-600 hover:text-indigo-700 font-medium">Masuk</a>
+                                </p>
+                                <p class="text-xs text-gray-400 leading-relaxed">
+                                    Dengan membuat akun, saya setuju dengan <a href="#" class="text-indigo-600 hover:text-indigo-700">Syarat dan Ketentuan</a> dan <a href="#" class="text-indigo-600 hover:text-indigo-700">Kebijakan Privasi</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for form handling -->
+    <script>
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            // Get form elements
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const submitLoading = document.getElementById('submitLoading');
+            const errorMessages = document.getElementById('errorMessages');
+            const errorList = document.getElementById('errorList');
+            const emailError = document.getElementById('emailError');
+            const nameError = document.getElementById('nameError');
+            const passwordError = document.getElementById('passwordError');
+            const passwordConfirmationError = document.getElementById('passwordConfirmationError');
+            
+            // Clear previous errors
+            errorMessages.classList.add('hidden');
+            emailError.classList.add('hidden');
+            nameError.classList.add('hidden');
+            passwordError.classList.add('hidden');
+            passwordConfirmationError.classList.add('hidden');
+            errorList.innerHTML = '';
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.classList.add('hidden');
+            submitLoading.classList.remove('hidden');
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const email = formData.get('email');
+            const name = formData.get('name');
+            const password = formData.get('password');
+            const passwordConfirmation = formData.get('password_confirmation');
+            
+            // Simple validation
+            let hasErrors = false;
+            
+            if (!email) {
+                emailError.textContent = 'Email harus diisi';
+                emailError.classList.remove('hidden');
+                hasErrors = true;
+            } else if (!isValidEmail(email)) {
+                emailError.textContent = 'Format email tidak valid';
+                emailError.classList.remove('hidden');
+                hasErrors = true;
+            }
+            
+            if (!name) {
+                nameError.textContent = 'Nama harus diisi';
+                nameError.classList.remove('hidden');
+                hasErrors = true;
+            } else if (name.length < 2) {
+                nameError.textContent = 'Nama minimal 2 karakter';
+                nameError.classList.remove('hidden');
+                hasErrors = true;
+            }
+            
+            if (!password) {
+                passwordError.textContent = 'Password harus diisi';
+                passwordError.classList.remove('hidden');
+                hasErrors = true;
+            } else if (password.length < 6) {
+                passwordError.textContent = 'Password minimal 6 karakter';
+                passwordError.classList.remove('hidden');
+                hasErrors = true;
+            }
+            
+            if (!passwordConfirmation) {
+                passwordConfirmationError.textContent = 'Konfirmasi password harus diisi';
+                passwordConfirmationError.classList.remove('hidden');
+                hasErrors = true;
+            } else if (password !== passwordConfirmation) {
+                passwordConfirmationError.textContent = 'Konfirmasi password tidak sama';
+                passwordConfirmationError.classList.remove('hidden');
+                hasErrors = true;
+            }
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.classList.remove('hidden');
+                submitLoading.classList.add('hidden');
+                
+                if (hasErrors) {
+                    return;
+                }
+                
+                // Simulate registration logic here
+                // For demo purposes, we'll show success message
+                alert('Registrasi berhasil! (Demo - silakan integrasikan dengan backend Anda)');
+                
+                // In real implementation, you would:
+                // 1. Send data to your backend API
+                // 2. Handle registration response
+                // 3. Redirect to login or show errors
+                
+            }, 1500);
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // Add real-time validation
+        document.getElementById('email').addEventListener('blur', function() {
+            const email = this.value;
+            const emailError = document.getElementById('emailError');
+            
+            if (email && !isValidEmail(email)) {
+                emailError.textContent = 'Format email tidak valid';
+                emailError.classList.remove('hidden');
+            } else {
+                emailError.classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('name').addEventListener('input', function() {
+            const name = this.value;
+            const nameError = document.getElementById('nameError');
+            
+            if (name && name.length < 2) {
+                nameError.textContent = 'Nama minimal 2 karakter';
+                nameError.classList.remove('hidden');
+            } else {
+                nameError.classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const passwordError = document.getElementById('passwordError');
+            const passwordConfirmation = document.getElementById('password_confirmation').value;
+            const passwordConfirmationError = document.getElementById('passwordConfirmationError');
+            
+            if (password && password.length < 6) {
+                passwordError.textContent = 'Password minimal 6 karakter';
+                passwordError.classList.remove('hidden');
+            } else {
+                passwordError.classList.add('hidden');
+            }
+            
+            // Check password confirmation match
+            if (passwordConfirmation && password !== passwordConfirmation) {
+                passwordConfirmationError.textContent = 'Konfirmasi password tidak sama';
+                passwordConfirmationError.classList.remove('hidden');
+            } else {
+                passwordConfirmationError.classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('password_confirmation').addEventListener('input', function() {
+            const passwordConfirmation = this.value;
+            const password = document.getElementById('password').value;
+            const passwordConfirmationError = document.getElementById('passwordConfirmationError');
+            
+            if (passwordConfirmation && password !== passwordConfirmation) {
+                passwordConfirmationError.textContent = 'Konfirmasi password tidak sama';
+                passwordConfirmationError.classList.remove('hidden');
+            } else {
+                passwordConfirmationError.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
