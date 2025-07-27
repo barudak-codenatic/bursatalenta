@@ -33,4 +33,28 @@ app.get('/provider-dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/provider/dashboard.html'));
 });
 
+app.get('/provider/add-job', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/provider/add-job.html'));
+});
+
+app.get('/provider/edit-job', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/provider/edit-job.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/dashboard.html'));
+});
+
+app.get('/job-detail', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/job-detail.html'));
+});
+
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/profile.html'));
+});
+
+app.get('/my-applications', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/my-applications.html'));
+});
+
 module.exports = app;
