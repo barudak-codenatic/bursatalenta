@@ -1,10 +1,19 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
 app.use(express.json());
+app.use(
+  session({
+    secret: "rahasia_login_sesi",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, 
+  })
+);
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api/users', userRoutes);
 
