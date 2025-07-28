@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Daftar Penyedia Jasa - Bursa Talenta</title>
+    <title>Daftar Admin - Bursa Talenta</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -37,10 +37,10 @@
                     <div class="max-w-lg">
                         <h1 class="text-3xl font-bold text-gray-900 mb-2 leading-relaxed">
                             Bergabung sebagai<br>
-                            Penyedia Jasa Profesional
+                            Administrator Sistem
                         </h1>
                         <p class="text-lg text-gray-600 mb-6">
-                            Tawarkan layanan terbaik Anda dan temukan klien potensial di Bursa Talenta
+                            Kelola dan awasi platform Bursa Talenta dengan akses administrator
                         </p>
 
                         <!-- Main Illustration Image -->
@@ -58,8 +58,8 @@
                     <div class="w-full max-w-sm">
                         <!-- Form Header -->
                         <div class="mb-6">
-                            <h2 class="text-2xl font-bold text-gray-900 mb-1">Daftar sebagai Penyedia Jasa</h2>
-                            <p class="text-sm text-gray-500">Bergabunglah sebagai penyedia layanan profesional</p>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-1">Daftar sebagai Administrator</h2>
+                            <p class="text-sm text-gray-500">Bergabunglah sebagai administrator sistem</p>
                         </div>
 
                         <!-- Session Status (placeholder for success messages) -->
@@ -76,7 +76,7 @@
                             </div>
                         </div>
 
-                        <form id="providerRegisterForm" class="space-y-4" onsubmit="handleProviderRegister(event)">
+                        <form id="adminRegisterForm" class="space-y-4" onsubmit="handleAdminRegister(event)">
                             <!-- Email Address -->
                             <div>
                                 <input id="email" 
@@ -90,15 +90,15 @@
                                 <div id="emailError" class="mt-1 text-xs text-red-600 hidden"></div>
                             </div>
 
-                            <!-- Company/Institution Name -->
+                            <!-- Full Name -->
                             <div>
                                 <input id="name" 
                                        type="text" 
                                        name="name" 
                                        required 
                                        autofocus 
-                                       autocomplete="organization"
-                                       placeholder="Nama Perusahaan/Institusi"
+                                       autocomplete="name"
+                                       placeholder="Nama Lengkap"
                                        class="w-full px-3 py-3 border border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-gray-400 text-gray-700 text-sm"
                                 />
                                 <div id="nameError" class="mt-1 text-xs text-red-600 hidden"></div>
@@ -135,7 +135,7 @@
                                 <button type="submit" 
                                         id="submitBtn"
                                         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors text-sm">
-                                    <span id="submitText">Daftar sebagai Penyedia</span>
+                                    <span id="submitText">Daftar sebagai Admin</span>
                                     <span id="submitLoading" class="hidden">
                                         <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -167,7 +167,7 @@
 
     <!-- JavaScript for form handling -->
     <script>
-        function handleProviderRegister(event) {
+        function handleAdminRegister(event) {
             event.preventDefault();
             
             // Get form elements
@@ -215,11 +215,11 @@
             }
             
             if (!name) {
-                nameError.textContent = 'Nama perusahaan/institusi harus diisi';
+                nameError.textContent = 'Nama lengkap harus diisi';
                 nameError.classList.remove('hidden');
                 hasErrors = true;
             } else if (name.length < 2) {
-                nameError.textContent = 'Nama perusahaan/institusi minimal 2 karakter';
+                nameError.textContent = 'Nama lengkap minimal 2 karakter';
                 nameError.classList.remove('hidden');
                 hasErrors = true;
             }
@@ -244,27 +244,55 @@
                 hasErrors = true;
             }
             
-            // Simulate API call
-            setTimeout(() => {
+            if (hasErrors) {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.classList.remove('hidden');
+                submitLoading.classList.add('hidden');
+                return;
+            }
+            
+            // Send data to backend API
+            const adminData = {
+                email: email,
+                name: name,
+                password: password,
+                role: 'ADMIN'
+            };
+            
+            fetch('/api/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(adminData)
+            })
+            .then(response => response.json())
+            .then(data => {
                 // Reset button state
                 submitBtn.disabled = false;
                 submitText.classList.remove('hidden');
                 submitLoading.classList.add('hidden');
                 
-                if (hasErrors) {
-                    return;
+                if (data.message === 'User registered successfully') {
+                    alert('Registrasi administrator berhasil! Silakan login dengan akun yang baru dibuat.');
+                    window.location.href = '/login';
+                } else {
+                    // Show error message
+                    errorMessages.classList.remove('hidden');
+                    errorList.innerHTML = `<li>${data.message || 'Terjadi kesalahan saat mendaftar'}</li>`;
                 }
+            })
+            .catch(error => {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.classList.remove('hidden');
+                submitLoading.classList.add('hidden');
                 
-                // Simulate registration logic here
-                // For demo purposes, we'll show success message
-                alert('Registrasi penyedia jasa berhasil! (Demo - silakan integrasikan dengan backend Anda)');
-                
-                // In real implementation, you would:
-                // 1. Send data to your backend API with provider type
-                // 2. Handle registration response
-                // 3. Redirect to login or show errors
-                
-            }, 1500);
+                console.error('Error:', error);
+                errorMessages.classList.remove('hidden');
+                errorList.innerHTML = '<li>Terjadi kesalahan saat mendaftar. Silakan coba lagi.</li>';
+            });
         }
         
         function isValidEmail(email) {
@@ -290,7 +318,7 @@
             const nameError = document.getElementById('nameError');
             
             if (name && name.length < 2) {
-                nameError.textContent = 'Nama perusahaan/institusi minimal 2 karakter';
+                nameError.textContent = 'Nama lengkap minimal 2 karakter';
                 nameError.classList.remove('hidden');
             } else {
                 nameError.classList.add('hidden');

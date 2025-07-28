@@ -25,20 +25,20 @@ app.get('/forgot-password', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/auth/forgot-password.html'));
 });
 
-app.get('/provider-register', (req, res) => {
+app.get('/admin-register', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/auth/provider-register.html'));
 });
 
-app.get('/provider-dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/view/provider/dashboard.html'));
+app.get('/admin-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/admin/dashboard.html'));
 });
 
-app.get('/provider/add-job', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/view/provider/add-job.html'));
+app.get('/admin/add-job', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/admin/add-job.html'));
 });
 
-app.get('/provider/edit-job', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/view/provider/edit-job.html'));
+app.get('/admin/edit-job', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/admin/edit-job.html'));
 });
 
 app.get('/dashboard', (req, res) => {
