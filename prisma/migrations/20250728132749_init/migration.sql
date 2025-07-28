@@ -42,6 +42,8 @@ CREATE TABLE `Applicant` (
     `user_id` INTEGER NOT NULL,
     `job_id` INTEGER NOT NULL,
     `resume` VARCHAR(191) NOT NULL,
+    `salary_expectation_min` INTEGER NULL,
+    `salary_expectation_max` INTEGER NULL,
     `status` VARCHAR(191) NOT NULL,
     `applied_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 

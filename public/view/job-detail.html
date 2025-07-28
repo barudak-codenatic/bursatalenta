@@ -192,107 +192,41 @@
             <div class="px-6 py-6">
                 <form id="applicationForm" class="space-y-6" onsubmit="handleApplicationSubmit(event)">
 
-                    <!-- Data Pribadi Section -->
+                    <!-- CV/Resume Section -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">Data Pribadi</h4>
+                        <h4 class="text-lg font-medium text-gray-900 mb-4">CV/Resume</h4>
                         
                         <div class="space-y-4">
-                            <!-- Nama -->
+                            <!-- CV Link -->
                             <div>
-                                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                                <input type="text" name="nama" id="nama" required 
+                                <label for="cv_link" class="block text-sm font-medium text-gray-700 mb-1">Link CV/Resume</label>
+                                <input type="url" name="cv_link" id="cv_link" required 
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="Tedy Sukma Permana">
-                            </div>
-
-                            <!-- Email Aktif -->
-                            <div>
-                                <label for="email_aktif" class="block text-sm font-medium text-gray-700 mb-1">Email Aktif</label>
-                                <input type="email" name="email_aktif" id="email_aktif" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="tedysukma@gmail.com">
-                            </div>
-
-                            <!-- No. HP / WhatsApp -->
-                            <div>
-                                <label for="no_hp" class="block text-sm font-medium text-gray-700 mb-1">No. HP / WhatsApp</label>
-                                <input type="tel" name="no_hp" id="no_hp" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="087256789899">
-                            </div>
-
-                            <!-- Tanggal Lahir -->
-                            <div>
-                                <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
-                                <input type="date" name="tanggal_lahir" id="tanggal_lahir" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-
-                            <!-- Alamat Lengkap -->
-                            <div>
-                                <label for="alamat_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
-                                <input type="text" name="alamat_lengkap" id="alamat_lengkap" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="Jl. Randusan no 22"">
+                                       placeholder="https://drive.google.com/file/d/...">
+                                <p class="text-xs text-gray-500 mt-1">Masukkan link Google Drive, Dropbox, atau platform lainnya</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Dokumen Section -->
+                    <!-- Salary Expectation Section -->
                     <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">Dokumen</h4>
+                        <h4 class="text-lg font-medium text-gray-900 mb-4">Ekspektasi Gaji</h4>
                         
                         <div class="space-y-4">
-                            <!-- CV/Resume -->
+                            <!-- Salary Min -->
                             <div>
-                                <label for="cv_resume" class="block text-sm font-medium text-gray-700 mb-1">CV/Resume</label>
-                                <div class="relative">
-                                    <input type="file" name="cv_resume" id="cv_resume" accept=".pdf,.doc,.docx" required 
-                                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <div class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 flex items-center justify-between">
-                                        <span class="text-gray-500" id="cv_file_name">Pilih File</span>
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                        </svg>
-                                    </div>
-                                </div>
+                                <label for="salary_min" class="block text-sm font-medium text-gray-700 mb-1">Gaji Minimum (Rp)</label>
+                                <input type="number" name="salary_min" id="salary_min" required 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="5000000" min="0">
                             </div>
 
-                            <!-- Portofolio (Opsional) -->
+                            <!-- Salary Max -->
                             <div>
-                                <label for="portofolio" class="block text-sm font-medium text-gray-700 mb-1">Portofolio (Opsional)</label>
-                                <div class="relative">
-                                    <input type="file" name="portofolio" id="portofolio" accept=".pdf,.doc,.docx,.zip" 
-                                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <div class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 flex items-center justify-between">
-                                        <span class="text-gray-500" id="portofolio_file_name">Pilih File</span>
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Informasi Tambahan Section -->
-                    <div>
-                        <h4 class="text-lg font-medium text-gray-900 mb-4">Informasi Tambahan</h4>
-                        
-                        <div class="space-y-4">
-                            <!-- Ekspetasi Gaji -->
-                            <div>
-                                <label for="ekspetasi_gaji" class="block text-sm font-medium text-gray-700 mb-1">Ekspetasi Gaji</label>
-                                <select name="ekspetasi_gaji" id="ekspetasi_gaji" required 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                    <option value="">Pilih Range Gaji</option>
-                                    <option value="5000000">Rp 5.000.000</option>
-                                    <option value="8000000" selected>Rp 8.000.000</option>
-                                    <option value="10000000">Rp 10.000.000</option>
-                                    <option value="15000000">Rp 15.000.000</option>
-                                    <option value="20000000">Rp 20.000.000</option>
-                                    <option value="negotiable">Negotiable</option>
-                                </select>
+                                <label for="salary_max" class="block text-sm font-medium text-gray-700 mb-1">Gaji Maksimum (Rp)</label>
+                                <input type="number" name="salary_max" id="salary_max" required 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="8000000" min="0">
                             </div>
                         </div>
                     </div>
@@ -548,15 +482,6 @@
             
             // Reset form
             document.getElementById('applicationForm').reset();
-            
-            // Reset file upload displays
-            document.getElementById('cv_file_name').textContent = 'Pilih File';
-            document.getElementById('cv_file_name').classList.remove('text-green-600');
-            document.getElementById('cv_file_name').classList.add('text-gray-500');
-            
-            document.getElementById('portofolio_file_name').textContent = 'Pilih File';
-            document.getElementById('portofolio_file_name').classList.remove('text-green-600');
-            document.getElementById('portofolio_file_name').classList.add('text-gray-500');
         }
 
         // Handle application form submit
@@ -565,59 +490,65 @@
             
             // Get form data
             const formData = new FormData(event.target);
+            const cvLink = formData.get('cv_link');
+            const salaryMin = formData.get('salary_min');
+            const salaryMax = formData.get('salary_max');
             
-            // Validate required files
-            const cvFile = document.getElementById('cv_resume').files[0];
-            if (!cvFile) {
-                alert('CV/Resume wajib diupload!');
+            // Validate required fields
+            if (!cvLink) {
+                alert('Link CV/Resume wajib diisi!');
                 return;
             }
             
-            // Add job information to form data
-            if (currentJob) {
-                formData.append('job_id', currentJob.id);
-                formData.append('job_title', currentJob.title);
-                formData.append('company_name', currentJob.company_name);
+            if (!salaryMin || !salaryMax) {
+                alert('Ekspektasi gaji harus diisi!');
+                return;
             }
             
-            // Simulate form submission
-            alert(`Lamaran Anda telah berhasil dikirim!\n\nTerima kasih telah melamar posisi ${currentJob?.title || 'ini'} di ${currentJob?.company_name || 'perusahaan ini'}. Kami akan meninjau aplikasi Anda dan menghubungi Anda dalam 1-2 minggu ke depan.`);
+            if (parseInt(salaryMin) > parseInt(salaryMax)) {
+                alert('Gaji minimum tidak boleh lebih besar dari gaji maksimum!');
+                return;
+            }
             
-            closeApplicationModal();
+            // Prepare application data
+            const applicationData = {
+                job_id: currentJob?.id,
+                resume: cvLink,
+                salary_expectation_min: parseInt(salaryMin),
+                salary_expectation_max: parseInt(salaryMax),
+                status: 'pending'
+            };
+            
+            // Send to backend
+            submitApplication(applicationData);
         }
 
-        // File upload preview
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle CV/Resume file upload
-            document.getElementById('cv_resume').addEventListener('change', function() {
-                const fileName = this.files[0]?.name;
-                const fileNameSpan = document.getElementById('cv_file_name');
-                if (fileName) {
-                    fileNameSpan.textContent = fileName;
-                    fileNameSpan.classList.add('text-green-600');
-                    fileNameSpan.classList.remove('text-gray-500');
-                } else {
-                    fileNameSpan.textContent = 'Pilih File';
-                    fileNameSpan.classList.remove('text-green-600');
-                    fileNameSpan.classList.add('text-gray-500');
-                }
-            });
+        // Submit application to backend
+        async function submitApplication(applicationData) {
+            try {
+                const response = await fetch('/api/applicants', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(applicationData)
+                });
 
-            // Handle Portfolio file upload
-            document.getElementById('portofolio').addEventListener('change', function() {
-                const fileName = this.files[0]?.name;
-                const fileNameSpan = document.getElementById('portofolio_file_name');
-                if (fileName) {
-                    fileNameSpan.textContent = fileName;
-                    fileNameSpan.classList.add('text-green-600');
-                    fileNameSpan.classList.remove('text-gray-500');
-                } else {
-                    fileNameSpan.textContent = 'Pilih File';
-                    fileNameSpan.classList.remove('text-green-600');
-                    fileNameSpan.classList.add('text-gray-500');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            });
-        });
+
+                const result = await response.json();
+                
+                // Show success message
+                alert(`Lamaran Anda telah berhasil dikirim!\n\nTerima kasih telah melamar posisi ${currentJob?.title || 'ini'} di ${currentJob?.company_name || 'perusahaan ini'}. Kami akan meninjau aplikasi Anda dan menghubungi Anda dalam 1-2 minggu ke depan.`);
+                
+                closeApplicationModal();
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                alert('Terjadi kesalahan saat mengirim lamaran. Silakan coba lagi.');
+            }
+        }
 
         // Close modal when clicking outside
         document.addEventListener('click', function(event) {
