@@ -7,6 +7,6 @@ router.get('/:id', userController.getUser);
 router.put('/:id', userController.updateUser);
 router.post("/login", userController.login);
 router.post("/logout", userController.logout);
-router.get("/me", userController.checkSession);
+router.get("/check-session", userController.checkSession);
 
 module.exports = router;

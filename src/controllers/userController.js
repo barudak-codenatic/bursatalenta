@@ -75,7 +75,7 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await loginUser(email, password);
+    const user = await userService.loginUser(email, password);
 
     // Simpan session user ID
     req.session.userId = user.id;
@@ -86,6 +86,7 @@ const login = async (req, res) => {
         id: user.id,
         email: user.email,
         name: user.name,
+        role: user.role,
       },
     });
   } catch (err) {
@@ -99,10 +100,28 @@ const logout = (req, res) => {
   });
 };
 
-const checkSession = (req, res) => {
-  if (req.session.userId) {
-    res.json({ loggedIn: true, userId: req.session.userId });
-  } else {
+const checkSession = async (req, res) => {
+  try {
+    if (req.session.userId) {
+      const user = await userService.getUserById(req.session.userId);
+      if (user) {
+        res.json({ 
+          loggedIn: true, 
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+          }
+        });
+      } else {
+        res.json({ loggedIn: false });
+      }
+    } else {
+      res.json({ loggedIn: false });
+    }
+  } catch (error) {
+    console.error('Check session error:', error);
     res.json({ loggedIn: false });
   }
 };

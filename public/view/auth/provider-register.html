@@ -62,6 +62,13 @@
                             <p class="text-sm text-gray-500">Bergabunglah sebagai administrator sistem</p>
                         </div>
 
+                        <!-- Success Message -->
+                        <div id="successMessage" class="mb-4 hidden">
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                                <span id="successText"></span>
+                            </div>
+                        </div>
+
                         <!-- Session Status (placeholder for success messages) -->
                         <div id="sessionStatus" class="mb-4 hidden">
                             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
@@ -69,7 +76,7 @@
                             </div>
                         </div>
 
-                        <!-- Error Messages (placeholder) -->
+                        <!-- Error Messages -->
                         <div id="errorMessages" class="mb-4 hidden">
                             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                                 <ul id="errorList"></ul>
@@ -275,12 +282,12 @@
                 submitLoading.classList.add('hidden');
                 
                 if (data.message === 'User registered successfully') {
-                    alert('Registrasi administrator berhasil! Silakan login dengan akun yang baru dibuat.');
-                    window.location.href = '/login';
+                    // Show success message
+                    showSuccessMessage('Registrasi administrator berhasil!');
+                    
                 } else {
                     // Show error message
-                    errorMessages.classList.remove('hidden');
-                    errorList.innerHTML = `<li>${data.message || 'Terjadi kesalahan saat mendaftar'}</li>`;
+                    showErrorMessage(data.message || 'Terjadi kesalahan saat mendaftar');
                 }
             })
             .catch(error => {
@@ -290,9 +297,34 @@
                 submitLoading.classList.add('hidden');
                 
                 console.error('Error:', error);
-                errorMessages.classList.remove('hidden');
-                errorList.innerHTML = '<li>Terjadi kesalahan saat mendaftar. Silakan coba lagi.</li>';
+                showErrorMessage('Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
             });
+        }
+        
+        function showSuccessMessage(message) {
+            const successDiv = document.getElementById('successMessage');
+            const successText = document.getElementById('successText');
+            const errorDiv = document.getElementById('errorMessages');
+            
+            // Hide error message if visible
+            errorDiv.classList.add('hidden');
+            
+            // Show success message
+            successText.textContent = message;
+            successDiv.classList.remove('hidden');
+        }
+        
+        function showErrorMessage(message) {
+            const errorDiv = document.getElementById('errorMessages');
+            const errorList = document.getElementById('errorList');
+            const successDiv = document.getElementById('successMessage');
+            
+            // Hide success message if visible
+            successDiv.classList.add('hidden');
+            
+            // Show error message
+            errorList.innerHTML = `<li>${message}</li>`;
+            errorDiv.classList.remove('hidden');
         }
         
         function isValidEmail(email) {
