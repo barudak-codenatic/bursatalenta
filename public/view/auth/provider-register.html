@@ -13,6 +13,9 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
     <!-- Custom Tailwind Config -->
     <script>
         tailwind.config = {
@@ -259,7 +262,7 @@
                 return;
             }
             
-            // Send data to backend API
+            // Send data to backend API using axios
             const adminData = {
                 email: email,
                 name: name,
@@ -267,15 +270,10 @@
                 role: 'ADMIN'
             };
             
-            fetch('/api/users/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(adminData)
-            })
-            .then(response => response.json())
-            .then(data => {
+            axios.post('/api/users/register', adminData)
+            .then(response => {
+                const data = response.data;
+                
                 // Reset button state
                 submitBtn.disabled = false;
                 submitText.classList.remove('hidden');
@@ -284,7 +282,6 @@
                 if (data.message === 'User registered successfully') {
                     // Show success message
                     showSuccessMessage('Registrasi administrator berhasil!');
-                    
                 } else {
                     // Show error message
                     showErrorMessage(data.message || 'Terjadi kesalahan saat mendaftar');
@@ -296,8 +293,19 @@
                 submitText.classList.remove('hidden');
                 submitLoading.classList.add('hidden');
                 
-                console.error('Error:', error);
-                showErrorMessage('Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
+                console.error('Admin register error:', error);
+                
+                if (error.response) {
+                    // Server responded with error status
+                    const errorMsg = error.response.data?.message || 'Registrasi administrator gagal';
+                    showErrorMessage(errorMsg);
+                } else if (error.request) {
+                    // Request was made but no response received
+                    showErrorMessage('Tidak dapat terhubung ke server. Periksa koneksi internet Anda.');
+                } else {
+                    // Something else happened
+                    showErrorMessage('Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
+                }
             });
         }
         

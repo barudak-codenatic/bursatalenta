@@ -9,6 +9,7 @@ CREATE TABLE `User` (
     `no_hp` VARCHAR(191) NULL,
     `status` VARCHAR(191) NULL,
     `porto_link` VARCHAR(191) NULL,
+    `photo` VARCHAR(191) NULL,
     `role` ENUM('ADMIN', 'USER') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,

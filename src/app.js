@@ -8,6 +8,7 @@ const applicantRoutes = require('./routes/applicantRoutes');
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: "rahasia_login_sesi",

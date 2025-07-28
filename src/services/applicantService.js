@@ -23,6 +23,19 @@ const getApplicantById = async (id) => {
   });
 };
 
+const getApplicantsByUserId = async (userId) => {
+  return await prisma.applicant.findMany({
+    where: { user_id: userId },
+    include: {
+      user: true,
+      job: true,
+    },
+    orderBy: {
+      applied_at: 'desc'
+    }
+  });
+};
+
 const updateApplicant = async (id, data) => {
   return await prisma.applicant.update({
     where: { id },
@@ -40,6 +53,7 @@ module.exports = {
   createApplicant,
   getAllApplicants,
   getApplicantById,
+  getApplicantsByUserId,
   updateApplicant,
   deleteApplicant,
 };

@@ -13,6 +13,9 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
     <!-- Custom Tailwind Config -->
     <script>
         tailwind.config = {
@@ -210,31 +213,41 @@
                 return;
             }
             
-            // Send data to backend API
+            // Send data to backend API using axios
             const loginData = {
                 email: email,
                 password: password
             };
             
-            fetch('/api/users/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData)
-            })
-            .then(response => response.json())
-            .then(data => {
+            axios.post('/api/users/login', loginData)
+            .then(response => {
+                const data = response.data;
+                
                 // Reset button state
                 submitBtn.disabled = false;
                 submitText.classList.remove('hidden');
                 submitLoading.classList.add('hidden');
                 
                 if (data.message === 'Login berhasil') {
-                    // Show success message
-                    showSuccessMessage('Login berhasil!');
+                    // Save user data to localStorage
+                    const userData = {
+                        id: data.user.id,
+                        email: data.user.email,
+                        name: data.user.name,
+                        role: data.user.role,
+                        address: data.user.address,
+                        born_date: data.user.born_date,
+                        no_hp: data.user.no_hp,
+                        status: data.user.status,
+                        porto_link: data.user.porto_link,
+                        loginTime: new Date().toISOString()
+                    };
                     
-                    // Redirect based on user role
+                    // Store user data in localStorage
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userRole', data.user.role);
+                    
                     if (data.user.role === 'ADMIN') {
                         window.location.href = '/admin-dashboard';
                     } else {
@@ -251,8 +264,23 @@
                 submitText.classList.remove('hidden');
                 submitLoading.classList.add('hidden');
                 
-                console.error('Error:', error);
-                showErrorMessage('Terjadi kesalahan saat login. Silakan coba lagi.');
+                console.error('Login error:', error);
+                
+                // Clear any existing user session data on error
+                clearUserSession();
+                
+                // Handle different types of errors
+                if (error.response) {
+                    // Server responded with error status
+                    const errorMsg = error.response.data?.message || 'Login gagal';
+                    showErrorMessage(errorMsg);
+                } else if (error.request) {
+                    // Request was made but no response received
+                    showErrorMessage('Tidak dapat terhubung ke server. Periksa koneksi internet Anda.');
+                } else {
+                    // Something else happened
+                    showErrorMessage('Terjadi kesalahan saat login. Silakan coba lagi.');
+                }
             });
         }
         
@@ -286,6 +314,39 @@
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
         }
+        
+        // Utility functions for localStorage management
+        function getCurrentUser() {
+            const userData = localStorage.getItem('currentUser');
+            return userData ? JSON.parse(userData) : null;
+        }
+        
+        function isUserLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+        
+        function clearUserSession() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userRole');
+        }
+        
+        function getUserRole() {
+            return localStorage.getItem('userRole');
+        }
+        
+        // Check if user is already logged in when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (isUserLoggedIn()) {
+                const userRole = getUserRole();
+                // Redirect to appropriate dashboard if already logged in
+                if (userRole === 'ADMIN') {
+                    window.location.href = '/admin-dashboard';
+                } else {
+                    window.location.href = '/dashboard';
+                }
+            }
+        });
         
         // Add real-time validation
         document.getElementById('email').addEventListener('blur', function() {

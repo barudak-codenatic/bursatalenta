@@ -17,6 +17,7 @@ model User {
   no_hp        String?
   status       String?
   porto_link      String?
+  photo        String?     // Profile photo filename
   role         Role
   created_at   DateTime    @default(now())
   updated_at   DateTime    @updatedAt

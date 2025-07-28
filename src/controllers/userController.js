@@ -39,6 +39,12 @@ const getUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      address: user.address,
+      born_date: user.born_date,
+      no_hp: user.no_hp,
+      status: user.status,
+      porto_link: user.porto_link,
+      photo: user.photo,
     });
   } catch (error) {
     console.error('Get user error:', error);
@@ -49,16 +55,55 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const updatedUser = await userService.updateUser(id, req.body);
+    const updateData = {};
+    
+    // Handle form field names from frontend (nama_lengkap, tanggal_lahir, etc.)
+    if (req.body.nama_lengkap !== undefined && req.body.nama_lengkap !== null && req.body.nama_lengkap !== '') {
+      updateData.name = req.body.nama_lengkap;
+    }
+    
+    if (req.body.alamat_domisili !== undefined && req.body.alamat_domisili !== null && req.body.alamat_domisili !== '') {
+      updateData.address = req.body.alamat_domisili;
+    }
+    
+    if (req.body.tanggal_lahir !== undefined && req.body.tanggal_lahir !== null && req.body.tanggal_lahir !== '') {
+      // Convert date string to ISO format for Prisma
+      updateData.born_date = new Date(req.body.tanggal_lahir).toISOString();
+    }
+    
+    if (req.body.no_hp !== undefined && req.body.no_hp !== null && req.body.no_hp !== '') {
+      updateData.no_hp = req.body.no_hp;
+    }
+    
+    if (req.body.status !== undefined && req.body.status !== null && req.body.status !== '') {
+      updateData.status = req.body.status;
+    }
+    
+    if (req.body.cv_link !== undefined && req.body.cv_link !== null && req.body.cv_link !== '') {
+      updateData.porto_link = req.body.cv_link;
+    }
+
+    // Handle photo upload
+    if (req.file) {
+      updateData.photo = req.file.filename;
+    }
+
+    console.log('Update data:', updateData);
+
+    const updatedUser = await userService.updateUser(id, updateData);
 
     res.json({
       message: 'User updated successfully',
-      user: {
-        id: updatedUser.id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        role: updatedUser.role,
-      },
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      address: updatedUser.address,
+      born_date: updatedUser.born_date,
+      no_hp: updatedUser.no_hp,
+      status: updatedUser.status,
+      porto_link: updatedUser.porto_link,
+      photo: updatedUser.photo,
     });
   } catch (error) {
     console.error('Update user error:', error);
@@ -67,7 +112,7 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.status(500).json({ message: 'Failed to update user' });
+    res.status(500).json({ message: 'Failed to update user', error: error.message });
   }
 };
 
@@ -87,6 +132,12 @@ const login = async (req, res) => {
         email: user.email,
         name: user.name,
         role: user.role,
+        address: user.address,
+        born_date: user.born_date,
+        no_hp: user.no_hp,
+        status: user.status,
+        porto_link: user.porto_link,
+        photo: user.photo,
       },
     });
   } catch (err) {

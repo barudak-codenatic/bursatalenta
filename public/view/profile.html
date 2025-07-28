@@ -13,6 +13,9 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
     <!-- Custom Tailwind Config -->
     <script>
         tailwind.config = {
@@ -157,16 +160,19 @@
                     <!-- Profile Picture -->
                     <div class="flex items-center space-x-6">
                         <div class="shrink-0">
-                            <img class="h-16 w-16 object-cover rounded-full" src="https://ui-avatars.com/api/?name=John+Doe&color=7C3AED&background=EDE9FE" alt="Current profile photo" />
+                            <img id="profilePhotoDisplay" class="h-16 w-16 object-cover rounded-full" 
+                                 src="https://ui-avatars.com/api/?name=User&color=7C3AED&background=EDE9FE" 
+                                 alt="Current profile photo" />
                         </div>
                         <label class="block">
                             <span class="sr-only">Choose profile photo</span>
-                            <input type="file" accept="image/*" class="block w-full text-sm text-slate-500
+                            <input type="file" name="photo" id="photo" accept="image/*" class="block w-full text-sm text-slate-500
                                 file:mr-4 file:py-2 file:px-4
                                 file:rounded-full file:border-0
                                 file:text-sm file:font-semibold
                                 file:bg-violet-50 file:text-violet-700
-                                hover:file:bg-violet-100"/>
+                                hover:file:bg-violet-100"
+                                onchange="previewImage(this)"/>
                         </label>
                     </div>
 
@@ -177,62 +183,51 @@
                             <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
                             <input type="text" name="nama_lengkap" id="nama_lengkap" required 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                   value="Tedy Sukma Permana">
+                                   placeholder="Masukkan nama lengkap">
                         </div>
 
                         <!-- Tanggal Lahir -->
                         <div>
                             <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
-                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" required 
+                            <input type="date" name="tanggal_lahir" id="tanggal_lahir"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-
-                        <!-- Gender -->
-                        <div>
-                            <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                            <select name="gender" id="gender" required 
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Pilih Gender</option>
-                                <option value="laki-laki" selected>Laki-laki</option>
-                                <option value="perempuan">Perempuan</option>
-                            </select>
                         </div>
 
                         <!-- No. HP / WhatsApp -->
                         <div>
                             <label for="no_hp" class="block text-sm font-medium text-gray-700 mb-1">No. HP / WhatsApp</label>
-                            <input type="tel" name="no_hp" id="no_hp" required 
+                            <input type="tel" name="no_hp" id="no_hp"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                   value="087256789899">
-                        </div>
-
-                        <!-- Alamat Domisili -->
-                        <div class="md:col-span-2">
-                            <label for="alamat_domisili" class="block text-sm font-medium text-gray-700 mb-1">Alamat Domisili</label>
-                            <input type="text" name="alamat_domisili" id="alamat_domisili" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                   value="Bandung">
+                                   placeholder="08xxxxxxxxxx">
                         </div>
 
                         <!-- Status -->
                         <div>
                             <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                            <select name="status" id="status" required 
+                            <select name="status" id="status"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                 <option value="">Pilih Status</option>
-                                <option value="mahasiswa" selected>Mahasiswa</option>
+                                <option value="mahasiswa">Mahasiswa</option>
                                 <option value="fresh_graduate">Fresh Graduate</option>
                                 <option value="berpengalaman">Berpengalaman</option>
                                 <option value="freelancer">Freelancer</option>
                             </select>
                         </div>
 
-                        <!-- Link CV / Profile LinkedIn -->
-                        <div>
-                            <label for="cv_link" class="block text-sm font-medium text-gray-700 mb-1">Link CV / Profile LinkedIn</label>
-                            <input type="url" name="cv_link" id="cv_link" required 
+                        <!-- Alamat Domisili -->
+                        <div class="md:col-span-2">
+                            <label for="alamat_domisili" class="block text-sm font-medium text-gray-700 mb-1">Alamat Domisili</label>
+                            <input type="text" name="alamat_domisili" id="alamat_domisili"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                   value="https://www.linkedin.com/in/tedy-permana/">
+                                   placeholder="Masukkan alamat lengkap">
+                        </div>
+
+                        <!-- Link CV / Profile LinkedIn -->
+                        <div class="md:col-span-2">
+                            <label for="cv_link" class="block text-sm font-medium text-gray-700 mb-1">Link CV / Profile LinkedIn</label>
+                            <input type="url" name="cv_link" id="cv_link"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="https://www.linkedin.com/in/username/">
                         </div>
                     </div>
 
@@ -250,8 +245,328 @@
         </div>
     </div>
 
+    <!-- Flash Message Modal -->
+    <div id="flashMessage" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center h-full w-full hidden z-50">
+        <div class="relative mx-auto p-6 border w-11/12 md:w-1/2 lg:w-1/3 max-w-md shadow-lg rounded-lg bg-white">
+            <div class="text-center">
+                <!-- Success/Error Icon -->
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4" id="flashIconContainer">
+                    <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="flashIcon">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                
+                <!-- Message Title -->
+                <h3 class="text-lg font-medium text-gray-900 mb-2" id="flashMessageTitle">
+                    Profile Berhasil Diperbarui!
+                </h3>
+                
+                <!-- Message Content -->
+                <div class="text-sm text-gray-600 mb-6" id="flashMessageContent">
+                    <p>Perubahan profile Anda telah disimpan.</p>
+                </div>
+                
+                <!-- Action Button -->
+                <div class="flex justify-center">
+                    <button onclick="closeFlashMessage()" 
+                            class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-md transition-colors" id="flashButton">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript -->
     <script>
+        // Global variable for user data
+        let currentUser = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!isUserLoggedIn()) {
+                alert('Anda harus login terlebih dahulu!');
+                window.location.href = '/login';
+                return;
+            }
+            
+            // Load user profile data
+            loadUserProfile();
+        });
+
+        // Utility functions for localStorage management
+        function getCurrentUser() {
+            const userData = localStorage.getItem('currentUser');
+            return userData ? JSON.parse(userData) : null;
+        }
+        
+        function isUserLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+        
+        function clearUserSession() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userRole');
+        }
+
+        function updateLocalStorageUser(userData) {
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+        }
+
+        // Validate URL format
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Load user profile data
+        async function loadUserProfile() {
+            try {
+                currentUser = getCurrentUser();
+                if (!currentUser) {
+                    alert('Data user tidak ditemukan. Silakan login ulang.');
+                    window.location.href = '/login';
+                    return;
+                }
+
+                // Fetch latest user data from API
+                const response = await axios.get(`/api/users/${currentUser.id}`);
+                const userData = response.data;
+                
+                // Update current user data
+                currentUser = userData;
+                updateLocalStorageUser(userData);
+                
+                // Populate form with user data
+                populateUserForm(userData);
+                
+                // Update UI elements
+                updateUserUI(userData);
+                
+            } catch (error) {
+                console.error('Error loading user profile:', error);
+                
+                if (error.response && error.response.status === 404) {
+                    alert('User tidak ditemukan. Silakan login ulang.');
+                    clearUserSession();
+                    window.location.href = '/login';
+                } else {
+                    // Use localStorage data as fallback
+                    currentUser = getCurrentUser();
+                    if (currentUser) {
+                        populateUserForm(currentUser);
+                        updateUserUI(currentUser);
+                    }
+                }
+            }
+        }
+
+        // Populate form with user data
+        function populateUserForm(userData) {
+            document.getElementById('nama_lengkap').value = userData.name || '';
+            document.getElementById('tanggal_lahir').value = userData.born_date ? userData.born_date.split('T')[0] : '';
+            document.getElementById('no_hp').value = userData.no_hp || '';
+            document.getElementById('alamat_domisili').value = userData.address || '';
+            document.getElementById('status').value = userData.status || '';
+            document.getElementById('cv_link').value = userData.porto_link || '';
+            
+            // Update profile photo display
+            updateProfilePhoto(userData);
+        }
+
+        // Update profile photo display
+        function updateProfilePhoto(userData) {
+            const profilePhotoDisplay = document.getElementById('profilePhotoDisplay');
+            if (userData.photo) {
+                profilePhotoDisplay.src = `/uploads/${userData.photo}`;
+                profilePhotoDisplay.alt = userData.name || 'Profile Photo';
+            } else {
+                const userName = encodeURIComponent(userData.name || 'User');
+                profilePhotoDisplay.src = `https://ui-avatars.com/api/?name=${userName}&color=7C3AED&background=EDE9FE`;
+                profilePhotoDisplay.alt = userData.name || 'User';
+            }
+        }
+
+        // Preview image before upload
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePhotoDisplay').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Update UI elements with user data
+        function updateUserUI(userData) {
+            // Update profile sections
+            const profileName = document.querySelectorAll('.text-sm.font-medium.text-gray-900, .text-gray-900');
+            profileName.forEach(element => {
+                if (element.textContent.includes('John Doe') || element.textContent === 'John Doe') {
+                    element.textContent = userData.name || 'User';
+                }
+            });
+
+            // Update profile images (avatars and navbar)
+            const profileImages = document.querySelectorAll('img[alt*="John Doe"], img[src*="John+Doe"]');
+            const userName = encodeURIComponent(userData.name || 'User');
+            const newImageUrl = userData.photo ? 
+                `/uploads/${userData.photo}` : 
+                `https://ui-avatars.com/api/?name=${userName}&color=7C3AED&background=EDE9FE`;
+            
+            profileImages.forEach(img => {
+                // Don't update the main profile photo display as it's handled separately
+                if (img.id !== 'profilePhotoDisplay') {
+                    img.src = newImageUrl;
+                    img.alt = userData.name || 'User';
+                }
+            });
+
+            // Update main profile photo display
+            updateProfilePhoto(userData);
+        }
+
+        // Handle profile form submit
+        async function handleProfileSubmit(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            
+            // Check if photo file was selected
+            const photoFile = formData.get('photo');
+            if (photoFile && photoFile.size === 0) {
+                formData.delete('photo'); // Remove empty file field
+            }
+
+            // Validate required fields
+            if (!formData.get('nama_lengkap')) {
+                alert('Nama lengkap harus diisi!');
+                return;
+            }
+
+            // Validate URL format if cv_link is provided
+            const cvLink = formData.get('cv_link');
+            if (cvLink && !isValidUrl(cvLink)) {
+                alert('Format link CV/LinkedIn tidak valid!');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Menyimpan...';
+
+                // Send update request to API with FormData
+                const response = await axios.put(`/api/users/${currentUser.id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                const updatedUser = response.data;
+
+                // Update localStorage with new data
+                const newUserData = {
+                    ...currentUser,
+                    ...updatedUser,
+                    loginTime: currentUser.loginTime // Keep original login time
+                };
+                updateLocalStorageUser(newUserData);
+                currentUser = newUserData;
+
+                // Update UI
+                updateUserUI(newUserData);
+
+                // Show success message
+                showSuccessMessage('Profile berhasil diperbarui!', 'Perubahan profile Anda telah disimpan.');
+
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+
+            } catch (error) {
+                console.error('Error updating profile:', error);
+
+                // Reset button state
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Simpan Perubahan';
+
+                if (error.response) {
+                    const errorMsg = error.response.data?.message || 'Terjadi kesalahan saat memperbarui profile';
+                    showErrorMessage('Gagal memperbarui profile', errorMsg);
+                } else if (error.request) {
+                    showErrorMessage('Koneksi bermasalah', 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.');
+                } else {
+                    showErrorMessage('Terjadi kesalahan', 'Terjadi kesalahan saat memperbarui profile. Silakan coba lagi.');
+                }
+            }
+        }
+
+        // Show success message
+        function showSuccessMessage(title, message) {
+            const flashMessage = document.getElementById('flashMessage');
+            const flashTitle = document.getElementById('flashMessageTitle');
+            const flashContent = document.getElementById('flashMessageContent');
+            const iconContainer = document.getElementById('flashIconContainer');
+            const icon = document.getElementById('flashIcon');
+            const button = document.getElementById('flashButton');
+            
+            // Update content
+            flashTitle.textContent = title;
+            flashContent.innerHTML = `<p>${message}</p>`;
+            
+            // Set success styling
+            iconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4';
+            icon.className = 'h-8 w-8 text-green-600';
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            button.className = 'bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-md transition-colors';
+            
+            // Show modal
+            flashMessage.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Show error message
+        function showErrorMessage(title, message) {
+            const flashMessage = document.getElementById('flashMessage');
+            const flashTitle = document.getElementById('flashMessageTitle');
+            const flashContent = document.getElementById('flashMessageContent');
+            const iconContainer = document.getElementById('flashIconContainer');
+            const icon = document.getElementById('flashIcon');
+            const button = document.getElementById('flashButton');
+            
+            // Update content
+            flashTitle.textContent = title;
+            flashContent.innerHTML = `<p>${message}</p>`;
+            
+            // Set error styling
+            iconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4';
+            icon.className = 'h-8 w-8 text-red-600';
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            button.className = 'bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-md transition-colors';
+            
+            // Show modal
+            flashMessage.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close flash message
+        function closeFlashMessage() {
+            const flashMessage = document.getElementById('flashMessage');
+            flashMessage.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
         // Toggle mobile menu
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobileMenu');
@@ -272,18 +587,20 @@
             if (!userButton || !userButton.onclick || userButton.onclick.toString().indexOf('toggleUserMenu') === -1) {
                 userMenu.classList.add('hidden');
             }
+
+            // Close flash message when clicking outside
+            const flashMessage = document.getElementById('flashMessage');
+            if (event.target === flashMessage) {
+                closeFlashMessage();
+            }
         });
 
-        // Handle profile form submit
-        function handleProfileSubmit(event) {
-            event.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(event.target);
-            
-            // Simulate form submission
-            alert('Profile berhasil diperbarui!\n\nPerubahan profile Anda telah disimpan dan akan ditinjau oleh admin dalam 1x24 jam.');
-        }
+        // Close flash message with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeFlashMessage();
+            }
+        });
     </script>
 </body>
 

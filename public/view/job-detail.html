@@ -13,6 +13,9 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
     <!-- Custom Tailwind Config -->
     <script>
         tailwind.config = {
@@ -171,6 +174,42 @@
         </div>
     </main>
 
+    <!-- Flash Message Modal -->
+    <div id="flashMessage" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center h-full w-full hidden z-50">
+        <div class="relative mx-auto p-6 border w-11/12 md:w-1/2 lg:w-1/3 max-w-md shadow-lg rounded-lg bg-white">
+            <div class="text-center">
+                <!-- Success Icon -->
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                    <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                
+                <!-- Message Title -->
+                <h3 class="text-lg font-medium text-gray-900 mb-2" id="flashMessageTitle">
+                    Lamaran Berhasil Dikirim!
+                </h3>
+                
+                <!-- Message Content -->
+                <div class="text-sm text-gray-600 mb-6" id="flashMessageContent">
+                    <p>Terima kasih telah melamar posisi ini. Kami akan meninjau lamaran Anda dan menghubungi Anda dalam 1-2 minggu ke depan.</p>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="closeFlashMessage()" 
+                            class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
+                        OK
+                    </button>
+                    <button onclick="goToDashboard()" 
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-md transition-colors">
+                        Kembali ke Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Application Modal -->
     <div id="applicationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
         <div class="relative top-10 mx-auto p-0 border w-11/12 md:w-3/4 lg:w-1/2 max-w-2xl shadow-lg rounded-lg bg-white max-h-screen overflow-y-auto">
@@ -197,13 +236,13 @@
                         <h4 class="text-lg font-medium text-gray-900 mb-4">CV/Resume</h4>
                         
                         <div class="space-y-4">
-                            <!-- CV Link -->
+                            <!-- CV File Upload -->
                             <div>
-                                <label for="cv_link" class="block text-sm font-medium text-gray-700 mb-1">Link CV/Resume</label>
-                                <input type="url" name="cv_link" id="cv_link" required 
-                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="https://drive.google.com/file/d/...">
-                                <p class="text-xs text-gray-500 mt-1">Masukkan link Google Drive, Dropbox, atau platform lainnya</p>
+                                <label for="cv_file" class="block text-sm font-medium text-gray-700 mb-1">Upload CV/Resume</label>
+                                <input type="file" name="cv_file" id="cv_file" required 
+                                       accept=".pdf,.doc,.docx"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                <p class="text-xs text-gray-500 mt-1">Format yang didukung: PDF, DOC, DOCX (maksimal 5MB)</p>
                             </div>
                         </div>
                     </div>
@@ -254,19 +293,25 @@
             return urlParams.get('id');
         }
 
-        // Fetch job data from API
+        // Fetch job data from API using axios
         async function fetchJobDetail(jobId) {
             try {
-                const response = await fetch(`/api/jobs/${jobId}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const job = await response.json();
+                const response = await axios.get(`/api/jobs/${jobId}`);
+                const job = response.data;
                 currentJob = job;
                 displayJobDetail(job);
             } catch (error) {
                 console.error('Error fetching job detail:', error);
-                showJobError('Gagal memuat detail lowongan kerja.');
+                if (error.response) {
+                    // Server responded with error status
+                    showJobError(`Gagal memuat detail lowongan kerja. Status: ${error.response.status}`);
+                } else if (error.request) {
+                    // Request was made but no response received
+                    showJobError('Tidak dapat terhubung ke server. Periksa koneksi internet Anda.');
+                } else {
+                    // Something else happened
+                    showJobError('Gagal memuat detail lowongan kerja.');
+                }
             }
         }
 
@@ -437,6 +482,13 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!isUserLoggedIn()) {
+                alert('Anda harus login terlebih dahulu untuk melihat detail lowongan!');
+                window.location.href = '/login';
+                return;
+            }
+            
             const jobId = getJobIdFromUrl();
             if (!jobId) {
                 showJobError('ID lowongan tidak ditemukan.');
@@ -446,6 +498,26 @@
             // Fetch job detail
             fetchJobDetail(jobId);
         });
+
+        // Utility functions for localStorage management
+        function getCurrentUser() {
+            const userData = localStorage.getItem('currentUser');
+            return userData ? JSON.parse(userData) : null;
+        }
+        
+        function isUserLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+        
+        function clearUserSession() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userRole');
+        }
+        
+        function getUserRole() {
+            return localStorage.getItem('userRole');
+        }
 
         // Toggle mobile menu
         function toggleMobileMenu() {
@@ -490,13 +562,26 @@
             
             // Get form data
             const formData = new FormData(event.target);
-            const cvLink = formData.get('cv_link');
+            const cvFile = formData.get('cv_file');
             const salaryMin = formData.get('salary_min');
             const salaryMax = formData.get('salary_max');
             
             // Validate required fields
-            if (!cvLink) {
-                alert('Link CV/Resume wajib diisi!');
+            if (!cvFile || cvFile.size === 0) {
+                alert('File CV/Resume wajib diupload!');
+                return;
+            }
+            
+            // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+            if (cvFile.size > 5 * 1024 * 1024) {
+                alert('Ukuran file CV/Resume tidak boleh lebih dari 5MB!');
+                return;
+            }
+            
+            // Validate file type
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(cvFile.type)) {
+                alert('Format file CV/Resume harus PDF, DOC, atau DOCX!');
                 return;
             }
             
@@ -510,44 +595,142 @@
                 return;
             }
             
-            // Prepare application data
-            const applicationData = {
-                job_id: currentJob?.id,
-                resume: cvLink,
-                salary_expectation_min: parseInt(salaryMin),
-                salary_expectation_max: parseInt(salaryMax),
-                status: 'pending'
-            };
+            // Get user data from localStorage
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                alert('Anda harus login terlebih dahulu!');
+                window.location.href = '/login';
+                return;
+            }
+            
+            // Prepare application data with FormData for file upload
+            const applicationFormData = new FormData();
+            applicationFormData.append('job_id', currentJob?.id);
+            applicationFormData.append('user_id', currentUser.id);
+            applicationFormData.append('cv_file', cvFile);
+            applicationFormData.append('salary_expectation_min', parseInt(salaryMin));
+            applicationFormData.append('salary_expectation_max', parseInt(salaryMax));
+            applicationFormData.append('status', 'success');
             
             // Send to backend
-            submitApplication(applicationData);
+            submitApplication(applicationFormData);
         }
 
-        // Submit application to backend
-        async function submitApplication(applicationData) {
+        // Submit application to backend using axios
+        async function submitApplication(applicationFormData) {
             try {
-                const response = await fetch('/api/applicants', {
-                    method: 'POST',
+                console.log('Submitting application with file upload...');
+                
+                const response = await axios.post('/api/applicants', applicationFormData, {
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(applicationData)
+                        'Content-Type': 'multipart/form-data'
+                    }
                 });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
+                const result = response.data;
                 
-                // Show success message
-                alert(`Lamaran Anda telah berhasil dikirim!\n\nTerima kasih telah melamar posisi ${currentJob?.title || 'ini'} di ${currentJob?.company_name || 'perusahaan ini'}. Kami akan meninjau aplikasi Anda dan menghubungi Anda dalam 1-2 minggu ke depan.`);
+                console.log('Application submitted successfully:', result);
                 
+                // Close application modal first
                 closeApplicationModal();
+                
+                // Show flash message with job details
+                showFlashMessage(
+                    'Lamaran Berhasil Dikirim!',
+                    `Terima kasih telah melamar posisi <strong>${currentJob?.title || 'ini'}</strong> di <strong>${currentJob?.company_name || 'perusahaan ini'}</strong>.<br><br>Kami akan meninjau lamaran Anda dan menghubungi Anda dalam 1-2 minggu ke depan.`
+                );
+                
             } catch (error) {
                 console.error('Error submitting application:', error);
-                alert('Terjadi kesalahan saat mengirim lamaran. Silakan coba lagi.');
+                
+                if (error.response) {
+                    // Server responded with error status
+                    const errorMsg = error.response.data?.message || 'Terjadi kesalahan saat mengirim lamaran';
+                    showErrorFlashMessage('Gagal Mengirim Lamaran', `${errorMsg}<br><br>Silakan coba lagi atau hubungi administrator jika masalah berlanjut.`);
+                } else if (error.request) {
+                    // Request was made but no response received
+                    showErrorFlashMessage('Koneksi Bermasalah', 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda dan coba lagi.');
+                } else {
+                    // Something else happened
+                    showErrorFlashMessage('Terjadi Kesalahan', 'Terjadi kesalahan saat mengirim lamaran. Silakan coba lagi.');
+                }
             }
+        }
+
+        // Show success flash message
+        function showFlashMessage(title, content) {
+            const flashMessage = document.getElementById('flashMessage');
+            const flashTitle = document.getElementById('flashMessageTitle');
+            const flashContent = document.getElementById('flashMessageContent');
+            
+            // Update content
+            flashTitle.textContent = title;
+            flashContent.innerHTML = `<p>${content}</p>`;
+            
+            // Update icon to success (green)
+            const iconContainer = flashMessage.querySelector('.bg-green-100');
+            const icon = iconContainer.querySelector('svg');
+            iconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4';
+            icon.className = 'h-8 w-8 text-green-600';
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            
+            // Show modal
+            flashMessage.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Show error flash message
+        function showErrorFlashMessage(title, content) {
+            const flashMessage = document.getElementById('flashMessage');
+            const flashTitle = document.getElementById('flashMessageTitle');
+            const flashContent = document.getElementById('flashMessageContent');
+            
+            // Update content
+            flashTitle.textContent = title;
+            flashContent.innerHTML = `<p>${content}</p>`;
+            
+            // Update icon to error (red)
+            const iconContainer = flashMessage.querySelector('.mx-auto.flex.items-center.justify-center');
+            const icon = iconContainer.querySelector('svg');
+            iconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4';
+            icon.className = 'h-8 w-8 text-red-600';
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            
+            // Update button color to red
+            const okButton = flashMessage.querySelector('button');
+            okButton.className = 'bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-md transition-colors';
+            
+            // Show modal
+            flashMessage.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close flash message
+        function closeFlashMessage() {
+            const flashMessage = document.getElementById('flashMessage');
+            flashMessage.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            
+            // Reset to success state for next use
+            resetFlashMessageToSuccess();
+        }
+
+        // Go to dashboard
+        function goToDashboard() {
+            window.location.href = '/dashboard';
+        }
+
+        // Reset flash message to success state
+        function resetFlashMessageToSuccess() {
+            const flashMessage = document.getElementById('flashMessage');
+            const iconContainer = flashMessage.querySelector('.mx-auto.flex.items-center.justify-center');
+            const icon = iconContainer.querySelector('svg');
+            const okButton = flashMessage.querySelector('button');
+            
+            // Reset to success styling
+            iconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4';
+            icon.className = 'h-8 w-8 text-green-600';
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            okButton.className = 'bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-md transition-colors';
         }
 
         // Close modal when clicking outside
@@ -556,12 +739,19 @@
             if (event.target === modal) {
                 closeApplicationModal();
             }
+            
+            // Close flash message when clicking outside
+            const flashMessage = document.getElementById('flashMessage');
+            if (event.target === flashMessage) {
+                closeFlashMessage();
+            }
         });
 
         // Close modal with Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeApplicationModal();
+                closeFlashMessage();
             }
         });
     </script>
