@@ -59,11 +59,34 @@ const handleApproveJob = async (req, res) => {
   }
 };
 
+const handleToggleJobStatus = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const { is_opened } = req.body;
+    
+    const job = await jobService.toggleJobStatus(jobId, is_opened);
+    res.json(job);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const handleGetJobsForAdmin = async (req, res) => {
+  try {
+    const jobs = await jobService.getAllJobsForAdmin();
+    res.json(jobs);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   handleCreateJob,
   handleGetJobs,
+  handleGetJobsForAdmin,
   handleGetJob,
   handleUpdateJob,
   handleDeleteJob,
-  handleApproveJob
+  handleApproveJob,
+  handleToggleJobStatus
 };

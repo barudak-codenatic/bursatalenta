@@ -133,11 +133,11 @@
                 <select id="categoryFilter" onchange="filterJobs()" 
                     class="border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none min-w-[150px]">
                     <option value="">Semua Kategori</option>
-                    <option value="ui-ux">UI/UX Designer</option>
-                    <option value="frontend">Frontend Developer</option>
-                    <option value="backend">Backend Developer</option>
-                    <option value="mobile">Mobile Developer</option>
-                    <option value="data">Data Scientist</option>
+                    <option value="Full Time">Full Time</option>
+                    <option value="Part Time">Part Time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Freelance">Freelance</option>
+                    <option value="Internship">Internship</option>
                 </select>
                 <!-- Dropdown arrow -->
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -163,270 +163,30 @@
 
         <!-- Job Cards Grid -->
         <div id="jobGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Job Card 1 -->
-            <div class="job-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-category="ui-ux" data-title="UI/UX Designer Junior">
-                <!-- Job Illustration -->
-                <div class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 relative">
-                    <div class="flex justify-center items-center h-32">
-                        
-                    </div>
-                </div>
-
-                <!-- Job Details -->
-                <div class="p-4 bg-custom-gray">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-gray-900 text-sm">UI/UX Designer Junior</h3>
-                        <span class="bg-custom-green text-white text-xs px-2 py-1 rounded-full font-medium">Full Time</span>
-                    </div>
-
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z M5 6h10v2H5V6z M5 10h10v2H5v-2z" />
-                            </svg>
-                            PT Teknologi Maju
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                            </svg>
-                            Jakarta Selatan
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                            </svg>
-                            Rp 10 - 15 juta/bulan
-                        </div>
-                    </div>
-
-                    <button onclick="window.location.href='/job-detail'"
-                        class="w-full bg-custom-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
-                        LAMAR SEKARANG
-                    </button>
+            <!-- Loading State -->
+            <div id="loadingState" class="col-span-full flex justify-center items-center py-12">
+                <div class="flex flex-col items-center">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-custom-blue mb-4"></div>
+                    <p class="text-gray-600">Memuat lowongan kerja...</p>
                 </div>
             </div>
+            <!-- Jobs will be inserted here dynamically -->
+        </div>
 
-            <!-- Job Card 2 -->
-            <div class="job-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-category="frontend" data-title="Frontend Developer">
-                <div class="p-6 bg-gradient-to-br from-green-50 to-green-100 relative">
-                    <div class="flex justify-center items-center h-32">
-                        
-                    </div>
-                </div>
-
-                <div class="p-4 bg-custom-gray">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-gray-900 text-sm">Frontend Developer</h3>
-                        <span class="bg-custom-green text-white text-xs px-2 py-1 rounded-full font-medium">Full Time</span>
-                    </div>
-
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z M5 6h10v2H5V6z M5 10h10v2H5v-2z" />
-                            </svg>
-                            PT Digital Inovasi
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                            </svg>
-                            Jakarta Pusat
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                            </svg>
-                            Rp 12 - 18 juta/bulan
-                        </div>
-                    </div>
-
-                    <button onclick="applyJob('Frontend Developer', 'PT Digital Inovasi')"
-                        class="w-full bg-custom-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
-                        LAMAR SEKARANG
-                    </button>
-                </div>
-            </div>
-
-            <!-- Job Card 3 -->
-            <div class="job-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-category="backend" data-title="Backend Developer Senior">
-                <div class="p-6 bg-gradient-to-br from-purple-50 to-purple-100 relative">
-                    <div class="flex justify-center items-center h-32">
-                        
-                    </div>
-                </div>
-
-                <div class="p-4 bg-custom-gray">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-gray-900 text-sm">Backend Developer Senior</h3>
-                        <span class="bg-custom-green text-white text-xs px-2 py-1 rounded-full font-medium">Full Time</span>
-                    </div>
-
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z M5 6h10v2H5V6z M5 10h10v2H5v-2z" />
-                            </svg>
-                            PT Solusi Digital
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                            </svg>
-                            Bandung
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                            </svg>
-                            Rp 15 - 25 juta/bulan
-                        </div>
-                    </div>
-
-                    <button onclick="applyJob('Backend Developer Senior', 'PT Solusi Digital')"
-                        class="w-full bg-custom-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
-                        LAMAR SEKARANG
-                    </button>
-                </div>
-            </div>
-
-            <!-- Job Card 4 -->
-            <div class="job-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-category="mobile" data-title="Mobile Developer">
-                <div class="p-6 bg-gradient-to-br from-orange-50 to-orange-100 relative">
-                    <div class="flex justify-center items-center h-32">
-                       
-                    </div>
-                </div>
-
-                <div class="p-4 bg-custom-gray">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-gray-900 text-sm">Mobile Developer</h3>
-                        <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">Contract</span>
-                    </div>
-
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z M5 6h10v2H5V6z M5 10h10v2H5v-2z" />
-                            </svg>
-                            PT Mobile Apps
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                            </svg>
-                            Surabaya
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                            </svg>
-                            Rp 8 - 12 juta/bulan
-                        </div>
-                    </div>
-
-                    <button onclick="applyJob('Mobile Developer', 'PT Mobile Apps')"
-                        class="w-full bg-custom-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
-                        LAMAR SEKARANG
-                    </button>
-                </div>
-            </div>
-
-            <!-- Job Card 5 -->
-            <div class="job-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-category="data" data-title="Data Scientist">
-                <div class="p-6 bg-gradient-to-br from-red-50 to-red-100 relative">
-                    <div class="flex justify-center items-center h-32">
-                       
-                    </div>
-                </div>
-
-                <div class="p-4 bg-custom-gray">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-gray-900 text-sm">Data Scientist</h3>
-                        <span class="bg-custom-green text-white text-xs px-2 py-1 rounded-full font-medium">Full Time</span>
-                    </div>
-
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z M5 6h10v2H5V6z M5 10h10v2H5v-2z" />
-                            </svg>
-                            PT Data Analytics
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                            </svg>
-                            Jakarta Barat
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                            </svg>
-                            Rp 18 - 30 juta/bulan
-                        </div>
-                    </div>
-
-                    <button onclick="applyJob('Data Scientist', 'PT Data Analytics')"
-                        class="w-full bg-custom-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
-                        LAMAR SEKARANG
-                    </button>
-                </div>
-            </div>
-
-            <!-- Job Card 6 -->
-            <div class="job-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-category="ui-ux" data-title="Senior UX Researcher">
-                <div class="p-6 bg-gradient-to-br from-indigo-50 to-indigo-100 relative">
-                    <div class="flex justify-center items-center h-32">
-                        
-                    </div>
-                </div>
-
-                <div class="p-4 bg-custom-gray">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-semibold text-gray-900 text-sm">Senior UX Researcher</h3>
-                        <span class="bg-custom-green text-white text-xs px-2 py-1 rounded-full font-medium">Full Time</span>
-                    </div>
-
-                    <div class="space-y-2 mb-4">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z M5 6h10v2H5V6z M5 10h10v2H5v-2z" />
-                            </svg>
-                            PT UX Research
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                            </svg>
-                            Remote
-                        </div>
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
-                            </svg>
-                            Rp 20 - 35 juta/bulan
-                        </div>
-                    </div>
-
-                    <button onclick="applyJob('Senior UX Researcher', 'PT UX Research')"
-                        class="w-full bg-custom-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
-                        LAMAR SEKARANG
-                    </button>
-                </div>
-            </div>
         </div>
 
         <!-- No Results Message -->
         <div id="noResults" class="hidden text-center py-12">
-            <div class="text-gray-400 text-6xl mb-4">🔍</div>
             <h3 class="text-lg font-medium text-gray-900 mb-2">Tidak ada lowongan ditemukan</h3>
             <p class="text-gray-500">Coba ubah filter atau kata kunci pencarian Anda</p>
         </div>
     </main>
 
     <script>
+        // Global variables to store jobs data
+        let allJobs = [];
+        let filteredJobs = [];
+
         // Toggle mobile menu
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobileMenu');
@@ -463,35 +223,150 @@
             }
         }
 
+        // Fetch jobs from API
+        async function fetchJobs() {
+            try {
+                const response = await fetch('/api/jobs');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                allJobs = data.jobs || data; // Handle different response formats
+                filteredJobs = [...allJobs];
+                displayJobs();
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+                showError('Gagal memuat data lowongan kerja. Silakan coba lagi.');
+            }
+        }
+
+        // Display jobs in cards
+        function displayJobs() {
+            const loadingState = document.getElementById('loadingState');
+            const jobGrid = document.getElementById('jobGrid');
+            const noResults = document.getElementById('noResults');
+
+            // Hide loading state
+            loadingState.classList.add('hidden');
+            
+            // Clear existing job cards first (keep loading state)
+            const existingCards = jobGrid.querySelectorAll('.job-card');
+            existingCards.forEach(card => card.remove());
+            
+            if (filteredJobs.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            // Hide no results
+            noResults.classList.add('hidden');
+
+            // Create job cards
+            filteredJobs.forEach(job => {
+                const jobCard = createJobCard(job);
+                jobGrid.appendChild(jobCard);
+            });
+        }
+
+        // Create job card element
+        function createJobCard(job) {
+            const card = document.createElement('div');
+            card.className = 'job-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow';
+            
+            // Create type badge with different colors based on type
+            let typeBadgeColor = 'bg-green-500';
+            if (job.type === 'Part Time') {
+                typeBadgeColor = 'bg-blue-500';
+            } else if (job.type === 'Contract') {
+                typeBadgeColor = 'bg-orange-500';
+            } else if (job.type === 'Freelance') {
+                typeBadgeColor = 'bg-purple-500';
+            } else if (job.type === 'Internship') {
+                typeBadgeColor = 'bg-yellow-500';
+            }
+            
+            const typeBadge = `<span class="${typeBadgeColor} text-white text-xs px-2 py-1 rounded-full font-medium">${job.type}</span>`;
+
+            const salary = job.salary ? `Rp ${parseInt(job.salary).toLocaleString('id-ID')}` : 'Tidak disebutkan';
+            
+            // Use default image if no image provided
+            const imageUrl = job.image || '/assets/logo.png';
+            
+            card.innerHTML = `
+                <div class="p-4 bg-gray-50 relative">
+                    <div class="flex justify-center items-center h-32">
+                        <img src="${imageUrl}" alt="${job.title}" class="h-full w-full object-cover rounded-lg">
+                    </div>
+                </div>
+
+                <div class="p-4 bg-white">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900 text-sm">${job.title}</h3>
+                        ${typeBadge}
+                    </div>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4z M5 6h10v2H5V6z M5 10h10v2H5v-2z" />
+                            </svg>
+                            ${job.company_name}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                            </svg>
+                            ${job.location}
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
+                            </svg>
+                            ${salary}
+                        </div>
+                    </div>
+
+                    <button onclick="viewJobDetail(${job.id})"
+                        class="w-full bg-custom-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm">
+                        LAMAR SEKARANG
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Show error message
+        function showError(message) {
+            const loadingState = document.getElementById('loadingState');
+            loadingState.innerHTML = `
+                <div class="flex flex-col items-center">
+                    <p class="text-red-600">${message}</p>
+                    <button onclick="fetchJobs()" class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Coba Lagi
+                    </button>
+                </div>
+            `;
+        }
+
         // Search functionality
         function searchJobs() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const categoryFilter = document.getElementById('categoryFilter').value;
-            const jobCards = document.querySelectorAll('.job-card');
-            const noResults = document.getElementById('noResults');
-            let visibleCount = 0;
-
-            jobCards.forEach(card => {
-                const title = card.getAttribute('data-title').toLowerCase();
-                const category = card.getAttribute('data-category');
+            
+            filteredJobs = allJobs.filter(job => {
+                const matchesSearch = 
+                    job.title.toLowerCase().includes(searchTerm) ||
+                    job.company_name.toLowerCase().includes(searchTerm) ||
+                    (job.description && job.description.toLowerCase().includes(searchTerm)) ||
+                    (job.location && job.location.toLowerCase().includes(searchTerm));
                 
-                const matchesSearch = title.includes(searchTerm);
-                const matchesCategory = !categoryFilter || category === categoryFilter;
+                const matchesCategory = !categoryFilter || job.type === categoryFilter;
                 
-                if (matchesSearch && matchesCategory) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
+                return matchesSearch && matchesCategory;
             });
-
-            // Show/hide no results message
-            if (visibleCount === 0) {
-                noResults.classList.remove('hidden');
-            } else {
-                noResults.classList.add('hidden');
-            }
+            
+            displayJobs();
         }
 
         // Filter functionality
@@ -504,10 +379,19 @@
             alert(`Anda akan melamar untuk posisi: ${jobTitle} di ${company}\n\nFitur ini akan segera tersedia!`);
         }
 
+        // View job detail
+        function viewJobDetail(jobId) {
+            // Navigate to job detail page
+            window.location.href = `/view/job-detail.html?id=${jobId}`;
+        }
+
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             // Set authenticated navigation by default
             toggleNavigation(true);
+            
+            // Fetch jobs data
+            fetchJobs();
         });
     </script>
 </body>
