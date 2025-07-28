@@ -2,6 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
+const jobRoutes = require('./routes/jobRoutes');
+const applicantRoutes = require('./routes/applicantRoutes');
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api/users', userRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applicants', applicantRoutes);
 
 // Untuk akses halaman HTML
 app.get('/', (req, res) => {
