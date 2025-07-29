@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="dummy-csrf-token">
+    <title>Hubungi Sales - Bursa Talenta</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Navbar Component -->
+    <script src="/components/navbar-component.js"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Figtree', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-sans antialiased bg-gray-50">
+    <!-- Navbar Component -->
+    <navbar-component></navbar-component>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        <!-- Breadcrumb -->
+                        <nav class="flex mb-6" aria-label="Breadcrumb">
+                            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                                <li class="inline-flex items-center">
+                                    <a href="/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                                        <svg class="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                                        </svg>
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="flex items-center">
+                                        <svg class="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Hubungi Sales</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
+
+                        <!-- Header -->
+                        <div class="mb-6">
+                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                                Hubungi Sales - Posting Lowongan Kerja
+                            </h2>
+                            <p class="mt-1 text-sm text-gray-600">
+                                Lengkapi informasi di bawah ini dan tim sales kami akan menghubungi Anda untuk proses posting lowongan kerja
+                            </p>
+                        </div>
+
+                        <!-- Success Message -->
+                        <div id="successMessage" class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative hidden" role="alert">
+                            <span class="block sm:inline" id="successText"></span>
+                        </div>
+
+                        <!-- Info Message -->
+                        <div class="mb-6 bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                            <div class="flex">
+                                <div class="py-1">
+                                    <svg class="fill-current h-6 w-6 text-blue-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Informasi Penting</p>
+                                    <p class="text-sm">Setelah mengirim form ini, tim sales kami akan menghubungi Anda dalam 1-2 hari kerja untuk proses verifikasi dan publikasi lowongan.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form -->
+                        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                            <div class="px-4 py-5 sm:p-6">
+                                <form id="jobForm" class="space-y-6" onsubmit="handleJobSubmit(event)">
+                                    <!-- Informasi Perusahaan -->
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Perusahaan</h3>
+                                        <div class="grid grid-cols-1 gap-6">
+                                            <!-- Nama Perusahaan -->
+                                            <div>
+                                                <label for="company_name" class="block text-sm font-medium text-gray-700">Nama Perusahaan *</label>
+                                                <input type="text" name="company_name" id="company_name" required 
+                                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-3 py-2"
+                                                       placeholder="Contoh: PT. Tech Solutions Indonesia">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Informasi Lowongan -->
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Lowongan Kerja</h3>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <!-- Judul Lowongan -->
+                                        <div class="md:col-span-2">
+                                            <label for="title" class="block text-sm font-medium text-gray-700">Judul Lowongan *</label>
+                                            <input type="text" name="title" id="title" required 
+                                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-3 py-2"
+                                                   placeholder="Contoh: Frontend Developer">
+                                        </div>
+
+                                        <!-- Lokasi -->
+                                        <div>
+                                            <label for="location" class="block text-sm font-medium text-gray-700">Lokasi *</label>
+                                            <input type="text" name="location" id="location" required 
+                                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-3 py-2"
+                                                   placeholder="Contoh: Jakarta, Indonesia">
+                                        </div>
+
+                                        <!-- Kategori -->
+                                        <div>
+                                            <label for="type" class="block text-sm font-medium text-gray-700">Tipe Pekerjaan *</label>
+                                            <select name="type" id="type" required 
+                                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-3 py-2">
+                                                <option value="">Pilih Tipe</option>
+                                                <option value="Full Time">Full Time</option>
+                                                <option value="Part Time">Part Time</option>
+                                                <option value="Contract">Contract</option>
+                                                <option value="Internship">Internship</option>
+                                                <option value="Freelance">Freelance</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Gaji -->
+                                        <div class="md:col-span-2">
+                                            <label for="salary" class="block text-sm font-medium text-gray-700">Gaji (Opsional)</label>
+                                            <div class="mt-1 relative rounded-md shadow-sm">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm">Rp</span>
+                                                </div>
+                                                <input type="number" name="salary" id="salary" step="1" 
+                                                       class="pl-12 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 py-2"
+                                                       placeholder="0">
+                                            </div>
+                                        </div>
+
+                                        <!-- Cover Image -->
+                                        <div class="md:col-span-2">
+                                            <label for="image" class="block text-sm font-medium text-gray-700">Cover Image (Opsional)</label>
+                                            <input id="image" name="image" type="file" accept="image/png, image/jpeg, image/jpg" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-3 py-2" />
+                                            <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG. Maksimal 2MB.</p>
+                                        </div>
+
+                                        <!-- Deskripsi -->
+                                        <div class="md:col-span-2">
+                                            <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi Lowongan *</label>
+                                            <textarea name="description" id="description" rows="6" required 
+                                                      class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 px-3 py-2"
+                                                      placeholder="Jelaskan detail lowongan kerja, persyaratan, tanggung jawab, dan benefit yang ditawarkan..."></textarea>
+                                        </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Form Actions -->
+                                    <div class="flex justify-end space-x-3 pt-6 border-t">
+                                        <a href="/" 
+                                           class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Batal
+                                        </a>
+                                        <button type="submit" 
+                                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                            Kirim Permintaan
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+    <!-- Flash Message Modal -->
+    <div id="flashMessage" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center h-full w-full hidden z-50">
+        <div class="relative mx-auto p-6 border w-11/12 md:w-1/2 lg:w-1/3 max-w-md shadow-lg rounded-lg bg-white">
+            <div class="text-center">
+                <!-- Success/Error Icon -->
+                <div id="flashIconContainer" class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                    <svg id="flashIcon" class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <!-- Message Title -->
+                <h3 class="text-lg font-medium text-gray-900 mb-2" id="flashMessageTitle">
+                    Sukses!
+                </h3>
+                <!-- Message Content -->
+                <div class="text-sm text-gray-600 mb-6" id="flashMessageContent">
+                    <p>Permintaan posting lowongan berhasil dikirim! Tim sales kami akan menghubungi Anda dalam 1-2 hari kerja.</p>
+                </div>
+                <!-- Action Button -->
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="closeFlashMessage()" 
+                            class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Handle form submission
+
+        function handleJobSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Validasi field
+            const companyName = form.company_name.value.trim();
+            const title = form.title.value.trim();
+            const location = form.location.value.trim();
+            const type = form.type.value;
+            const salary = form.salary.value;
+            const description = form.description.value.trim();
+            const imageInput = form.image;
+            const imageFile = imageInput.files[0];
+
+            if (!companyName) {
+                showFlashMessage('Gagal', 'Nama perusahaan wajib diisi.', false); return;
+            }
+            if (!title) {
+                showFlashMessage('Gagal', 'Judul lowongan wajib diisi.', false); return;
+            }
+            if (!location) {
+                showFlashMessage('Gagal', 'Lokasi wajib diisi.', false); return;
+            }
+            if (!type) {
+                showFlashMessage('Gagal', 'Tipe pekerjaan wajib dipilih.', false); return;
+            }
+            if (salary && (isNaN(salary) || parseInt(salary) < 0)) {
+                showFlashMessage('Gagal', 'Gaji harus berupa angka positif.', false); return;
+            }
+            if (!description) {
+                showFlashMessage('Gagal', 'Deskripsi lowongan wajib diisi.', false); return;
+            }
+            if (imageFile) {
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                if (!allowedTypes.includes(imageFile.type)) {
+                    showFlashMessage('Gagal', 'Format gambar harus JPG atau PNG.', false); return;
+                }
+                if (imageFile.size > 2 * 1024 * 1024) {
+                    showFlashMessage('Gagal', 'Ukuran gambar maksimal 2MB.', false); return;
+                }
+            }
+
+            submitJobData(formData);
+        }
+
+        function submitJobData(formData) {
+            fetch('/api/jobs/request', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id || data.message) {
+                    showFlashMessage('Sukses!', 'Permintaan posting lowongan berhasil dikirim! Tim sales kami akan menghubungi Anda dalam 1-2 hari kerja.', true);
+                    document.getElementById('jobForm').reset();
+                } else {
+                    throw new Error(data.error || 'Failed to submit job request');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showFlashMessage('Gagal', 'Terjadi kesalahan saat mengirim permintaan. Silakan coba lagi.', false);
+            });
+        }
+
+        function showFlashMessage(title, content, isSuccess) {
+            const flashMessage = document.getElementById('flashMessage');
+            const flashTitle = document.getElementById('flashMessageTitle');
+            const flashContent = document.getElementById('flashMessageContent');
+            const iconContainer = document.getElementById('flashIconContainer');
+            const icon = document.getElementById('flashIcon');
+            // Set content
+            flashTitle.textContent = title;
+            flashContent.innerHTML = `<p>${content}</p>`;
+            // Set icon and color
+            if (isSuccess) {
+                iconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4';
+                icon.className = 'h-8 w-8 text-green-600';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>';
+            } else {
+                iconContainer.className = 'mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4';
+                icon.className = 'h-8 w-8 text-red-600';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+            }
+            flashMessage.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFlashMessage() {
+            const flashMessage = document.getElementById('flashMessage');
+            flashMessage.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal with Escape key and click outside
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeFlashMessage();
+            }
+        });
+        document.addEventListener('click', function(event) {
+            const flashMessage = document.getElementById('flashMessage');
+            if (event.target === flashMessage) {
+                closeFlashMessage();
+            }
+        });
+    </script>
+</body>
+
+</html>
