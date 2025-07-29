@@ -71,4 +71,8 @@ app.get('/my-applications', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/my-applications.html'));
 });
 
+app.get('/contact-sales', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/contact-sales.html'));
+});
+
 module.exports = app;

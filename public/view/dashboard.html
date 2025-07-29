@@ -16,6 +16,9 @@
     <!-- Axios CDN -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
+    <!-- Navbar Component -->
+    <script src="/components/navbar-component.js"></script>
+    
     <!-- Custom Tailwind Config -->
     <script>
         tailwind.config = {
@@ -37,89 +40,7 @@
 
 <body class="font-sans antialiased bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm border-b" id="navbar">
-        <!-- Authenticated Navigation -->
-        <div id="authNav" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <img src="image/logo.png" alt="Bursa Talenta" class="h-12 w-auto mr-2">
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="dashboard.html" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">
-                        Home
-                    </a>
-                    <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">
-                        My Applications
-                    </a>
-                </div>
-
-                <!-- User Menu -->
-                <div class="flex items-center space-x-4">
-                    <!-- User Dropdown -->
-                    <div class="relative">
-                        <button onclick="toggleUserMenu()" class="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-                            <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                                JD
-                            </div>
-                            <span class="text-sm font-medium">John Doe</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        
-                        <!-- Dropdown Menu -->
-                        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
-                            <hr class="my-1">
-                            <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Out</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-gray-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mobile Navigation -->
-            <div id="mobileMenu" class="hidden md:hidden">
-                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t">
-                    <a href="dashboard.html" class="text-gray-900 block px-3 py-2 text-base font-medium">Dashboard</a>
-                    <a href="#" class="text-gray-500 hover:text-gray-700 block px-3 py-2 text-base font-medium">My Applications</a>
-                    <a href="#" class="text-gray-500 hover:text-gray-700 block px-3 py-2 text-base font-medium">Profile</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Guest Navigation (Hidden by default, can be toggled with JS) -->
-        <div id="guestNav" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo for Guest -->
-                <div class="flex items-center">
-                    <h1 class="text-xl font-bold text-indigo-600">Bursa Talenta</h1>
-                </div>
-
-                <!-- Auth Buttons -->
-                <div class="flex items-center space-x-4">
-                    <a href="login.html" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                        Sign In
-                    </a>
-                    <a href="register.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                        Register
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <navbar-component active-page="dashboard"></navbar-component>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -189,42 +110,6 @@
         // Global variables to store jobs data
         let allJobs = [];
         let filteredJobs = [];
-
-        // Toggle mobile menu
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        // Toggle user menu
-        function toggleUserMenu() {
-            const userMenu = document.getElementById('userMenu');
-            userMenu.classList.toggle('hidden');
-        }
-
-        // Close user menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const userMenu = document.getElementById('userMenu');
-            const userButton = event.target.closest('button');
-            
-            if (!userButton || !userButton.onclick || userButton.onclick.toString().indexOf('toggleUserMenu') === -1) {
-                userMenu.classList.add('hidden');
-            }
-        });
-
-        // Switch between guest and authenticated navigation
-        function toggleNavigation(isAuthenticated = true) {
-            const authNav = document.getElementById('authNav');
-            const guestNav = document.getElementById('guestNav');
-            
-            if (isAuthenticated) {
-                authNav.classList.remove('hidden');
-                guestNav.classList.add('hidden');
-            } else {
-                authNav.classList.add('hidden');
-                guestNav.classList.remove('hidden');
-            }
-        }
 
         // Fetch jobs from API using axios
         async function fetchJobs() {
@@ -397,9 +282,6 @@
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            // Set authenticated navigation by default
-            toggleNavigation(true);
-            
             // Fetch jobs data
             fetchJobs();
         });

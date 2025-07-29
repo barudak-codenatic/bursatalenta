@@ -6,9 +6,12 @@ router.get("/", jobController.handleGetJobs);
 router.get("/admin/all", jobController.handleGetJobsForAdmin);
 router.get("/:id", jobController.handleGetJob);
 router.post("/", jobController.handleCreateJob);
+router.post("/request", jobController.upload.single('image'), jobController.handleCreateJobRequest); // Route khusus untuk contact-sales dengan upload
 router.put("/:id", jobController.handleUpdateJob);
 router.put("/:id/toggle-status", jobController.handleToggleJobStatus);
 router.delete("/:id", jobController.handleDeleteJob);
 router.post("/:id/approve", jobController.handleApproveJob);
+
+module.exports = router;
 
 module.exports = router;
