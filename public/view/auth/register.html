@@ -280,6 +280,7 @@
                 if (data.message === 'User registered successfully') {
                     // Show success message
                     showSuccessMessage('Registrasi berhasil!');
+                    window.location.href = '/login';
                 } else {
                     // Show error message
                     showErrorMessage(data.message || 'Terjadi kesalahan saat mendaftar');

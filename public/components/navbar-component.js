@@ -1,7 +1,6 @@
 class NavbarComponent extends HTMLElement {
     constructor() {
         super();
-        // Tidak menggunakan Shadow DOM agar bisa menggunakan Tailwind CSS
     }
 
     connectedCallback() {
@@ -21,7 +20,39 @@ class NavbarComponent extends HTMLElement {
 
     render() {
         const activePage = this.getAttribute('active-page') || '';
-        
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+
+        const userInitials = user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'U';
+        const userName = user?.name || 'User';
+
+        const authSection = isLoggedIn
+            ? `
+                <!-- User Dropdown -->
+                <div class="relative">
+                    <button class="user-button flex items-center space-x-2 text-gray-700 hover:text-gray-900">
+                        <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                            ${userInitials}
+                        </div>
+                        <span class="text-sm font-medium">${userName}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+
+                    <div class="user-dropdown hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                        <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
+                        <a href="/contact-sales" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Hubungi Sales</a>
+                        <hr class="my-1">
+                        <button id="sign-out-btn" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Out</button>
+                    </div>
+                </div>
+            `
+            : `
+                <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-900">Sign In</a>
+                <a href="/register" class="ml-4 text-sm font-medium text-white bg-custom-blue hover:bg-blue-700 px-4 py-2 rounded">Sign Up</a>
+            `;
+
         this.innerHTML = `
             <nav class="bg-white shadow-sm border-b">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,36 +64,18 @@ class NavbarComponent extends HTMLElement {
 
                         <!-- Navigation Links -->
                         <div class="flex items-center space-x-8">
-                            <a href="/dashboard" class="nav-link ${activePage === 'dashboard' ? 'text-custom-blue border-b-2 border-custom-blue' : 'text-gray-500 hover:text-gray-700'} px-3 py-2 text-sm font-medium">
+                            <a href="/" class="nav-link ${activePage === 'dashboard' ? 'text-custom-blue border-b-2 border-custom-blue' : 'text-gray-500 hover:text-gray-700'} px-3 py-2 text-sm font-medium">
                                 Home
                             </a>
+                            ${isLoggedIn ? `
                             <a href="/my-applications" class="nav-link ${activePage === 'my-applications' ? 'text-custom-blue border-b-2 border-custom-blue' : 'text-gray-500 hover:text-gray-700'} px-3 py-2 text-sm font-medium">
                                 My Applications
-                            </a>
+                            </a>` : ''}
                         </div>
 
-                        <!-- User Menu -->
+                        <!-- User Menu or Auth Buttons -->
                         <div class="flex items-center space-x-4">
-                            <!-- User Dropdown -->
-                            <div class="relative">
-                                <button class="user-button flex items-center space-x-2 text-gray-700 hover:text-gray-900">
-                                    <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                                        JD
-                                    </div>
-                                    <span class="text-sm font-medium">John Doe</span>
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
-                                
-                                <!-- Dropdown Menu -->
-                                <div class="user-dropdown hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                                    <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
-                                    <a href="/contact-sales" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Hubungi Sales</a>
-                                    <hr class="my-1">
-                                    <a href="/login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Out</a>
-                                </div>
-                            </div>
+                            ${authSection}
                         </div>
                     </div>
                 </div>
@@ -73,30 +86,31 @@ class NavbarComponent extends HTMLElement {
     addEventListeners() {
         const userButton = this.querySelector('.user-button');
         const userDropdown = this.querySelector('.user-dropdown');
+        const signOutBtn = this.querySelector('#sign-out-btn');
 
-        // User menu toggle
+        // Toggle dropdown
         userButton?.addEventListener('click', (e) => {
             e.stopPropagation();
-            userDropdown.classList.toggle('hidden');
+            userDropdown?.classList.toggle('hidden');
         });
 
-        // Close dropdowns when clicking outside
+        // Close when clicking outside
         document.addEventListener('click', () => {
             userDropdown?.classList.add('hidden');
         });
 
-        // Prevent dropdown from closing when clicking inside
         userDropdown?.addEventListener('click', (e) => {
             e.stopPropagation();
         });
-    }
 
-    // Public methods for external use
-    toggleUserMenu() {
-        const userDropdown = this.querySelector('.user-dropdown');
-        userDropdown?.classList.toggle('hidden');
+        // Sign out
+        signOutBtn?.addEventListener('click', () => {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('userRole');
+            window.location.href = '/login';
+        });
     }
 }
 
-// Define the custom element
 customElements.define('navbar-component', NavbarComponent);

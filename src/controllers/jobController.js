@@ -118,8 +118,11 @@ const handleDeleteJob = async (req, res) => {
 const handleApproveJob = async (req, res) => {
   try {
     const jobId = req.params.id;
-    const approverId = req.session.userId; 
-    if (!approverId) return res.status(401).json({ message: "Unauthorized" });
+    const approverId = req.body.approverId;
+
+    if (!approverId) {
+      return res.status(400).json({ message: "Approver ID is required" });
+    }
 
     const job = await jobService.approveJob(jobId, approverId);
     res.json(job);
@@ -127,6 +130,7 @@ const handleApproveJob = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 const handleToggleJobStatus = async (req, res) => {
   try {

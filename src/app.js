@@ -55,10 +55,6 @@ app.get('/admin/edit-job', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/admin/edit-job.html'));
 });
 
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/view/dashboard.html'));
-});
-
 app.get('/job-detail', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/job-detail.html'));
 });
