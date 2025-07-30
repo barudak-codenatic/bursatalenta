@@ -35,7 +35,7 @@ model Job {
   salary       Int
   type         String      @default("Full Time")
   image        String?
-  is_approved  Boolean     @default(false)
+  is_approved  Boolean?
   is_opened  Boolean       @default(true)
   approved_by  Int?        // Only approved_by field as shown in ERD
   created_at   DateTime    @default(now())

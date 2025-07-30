@@ -64,7 +64,7 @@ const handleCreateJobRequest = async (req, res) => {
       salary: req.body.salary ? parseInt(req.body.salary) : 0,
       type: req.body.type,
       image: imagePath,
-      is_approved: false, // Default pending approval
+      is_approved: null, // Default menunggu persetujuan
       is_opened: true     // Default terbuka
     };
     
@@ -118,14 +118,30 @@ const handleDeleteJob = async (req, res) => {
 const handleApproveJob = async (req, res) => {
   try {
     const jobId = req.params.id;
-    const approverId = req.body.approverId;
-
-    if (!approverId) {
-      return res.status(400).json({ message: "Approver ID is required" });
-    }
+    // Menggunakan ID admin dari sesi jika tersedia, atau null jika tidak
+    const approverId = req.session?.user?.id || null;
 
     const job = await jobService.approveJob(jobId, approverId);
     res.json(job);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const handleRejectJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const job = await jobService.rejectJob(jobId);
+    res.json(job);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const handleGetJobsForApproval = async (req, res) => {
+  try {
+    const jobs = await jobService.getJobsForApproval();
+    res.json(jobs);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -158,10 +174,12 @@ module.exports = {
   handleCreateJobRequest,
   handleGetJobs,
   handleGetJobsForAdmin,
+  handleGetJobsForApproval,
   handleGetJob,
   handleUpdateJob,
   handleDeleteJob,
   handleApproveJob,
+  handleRejectJob,
   handleToggleJobStatus,
   upload
 };

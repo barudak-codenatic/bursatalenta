@@ -51,6 +51,17 @@ const getByUserId = async (req, res) => {
   }
 };
 
+const getByJobId = async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.jobId);
+    const applicants = await applicantService.getApplicantsByJobId(jobId);
+    res.json(applicants);
+  } catch (error) {
+    console.error('Error getting applicants by job ID:', error);
+    res.status(500).json({ message: 'Failed to get job applicants' });
+  }
+};
+
 const getById = async (req, res) => {
   try {
     const applicant = await applicantService.getApplicantById(Number(req.params.id));
@@ -89,6 +100,7 @@ module.exports = {
   getAll,
   getById,
   getByUserId,
+  getByJobId,
   update,
   remove,
 };

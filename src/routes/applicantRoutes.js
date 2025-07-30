@@ -37,6 +37,7 @@ const upload = multer({
 router.post('/', upload.single('cv_file'), applicantController.create);
 router.get('/', applicantController.getAll);
 router.get('/user/:userId', applicantController.getByUserId);
+router.get('/job/:jobId', applicantController.getByJobId);
 router.get('/:id', applicantController.getById);
 router.put('/:id', applicantController.update);
 router.delete('/:id', applicantController.remove);

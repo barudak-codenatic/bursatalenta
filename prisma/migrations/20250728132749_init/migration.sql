@@ -28,7 +28,7 @@ CREATE TABLE `Job` (
     `salary` INTEGER NOT NULL,
     `type` VARCHAR(191) NOT NULL DEFAULT 'Full Time',
     `image` VARCHAR(191) NULL,
-    `is_approved` BOOLEAN NOT NULL DEFAULT false,
+    `is_approved` BOOLEAN NULL,
     `is_opened` BOOLEAN NOT NULL DEFAULT true,
     `approved_by` INTEGER NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

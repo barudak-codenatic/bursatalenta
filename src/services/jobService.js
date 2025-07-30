@@ -77,13 +77,38 @@ const getAllJobsForAdmin = async () => {
   });
 };
 
+const getJobsForApproval = async () => {
+  return await prisma.job.findMany({
+    include: {
+      approver: {
+        select: { id: true, name: true, email: true },
+      },
+    },
+    orderBy: {
+      created_at: "desc",
+    },
+  });
+};
+
+const rejectJob = async (jobId) => {
+  return await prisma.job.update({
+    where: { id: Number(jobId) },
+    data: {
+      is_approved: false,
+      is_opened: false,
+    },
+  });
+};
+
 module.exports = {
     createJob,
     getAllJobs,
     getAllJobsForAdmin,
+    getJobsForApproval,
     getJobById,
     updateJob,
     deleteJob,
     approveJob,
+    rejectJob,
     toggleJobStatus,
 }
