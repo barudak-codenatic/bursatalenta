@@ -20,18 +20,21 @@ class AdminSidebarComponent extends HTMLElement {
     render() {
         const activePage = this.getAttribute('active-page') || '';
 
+        // Ambil data user dari localStorage
+        const userData = JSON.parse(localStorage.getItem('currentUser'));
+        const fullName = userData?.name || 'Administrator';
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&color=7C3AED&background=EDE9FE`;
+
         this.innerHTML = `
             <div class="w-64 bg-white shadow-sm min-h-screen">
                 <div class="p-6">
                     <!-- Profile Section -->
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <img class="h-16 w-16 rounded-full" 
-                                 src="https://ui-avatars.com/api/?name=PT.+Demo+Company&color=7C3AED&background=EDE9FE" 
-                                 alt="Administrator">
+                        <div class="h-16 w-16 rounded-full overflow-hidden bg-indigo-100 flex items-center justify-center">
+                            <img class="h-16 w-16 rounded-full" src="${avatarUrl}" alt="${fullName}">
                         </div>
                         <div>
-                            <div class="text-sm font-medium text-gray-900">Administrator</div>
+                            <div class="text-sm font-medium text-gray-900">${fullName}</div>
                             <div class="text-xs text-gray-500">Admin</div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ const userRoutes = require('./routes/userRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const applicantRoutes = require('./routes/applicantRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const isAdmin = require('./middleware/isAdmin');
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: "rahasia_login_sesi",
+    secret: "super_rahasia",
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false }, 
@@ -47,27 +48,27 @@ app.get('/admin-register', (req, res) => {
 
 // Rute dashboard telah dihapus karena tidak digunakan lagi
 
-app.get('/admin/add-job', (req, res) => {
+app.get('/admin/add-job', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/admin/add-job.html'));
 });
 
-app.get('/admin/edit-job', (req, res) => {
+app.get('/admin/edit-job', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/admin/edit-job.html'));
 });
 
-app.get('/admin/job-form', (req, res) => {
+app.get('/admin/job-form', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/admin/edit-job.html'));
 });
 
-app.get('/admin/job-details', (req, res) => {
+app.get('/admin/job-details', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/admin/job-detail.html'));
 });
 
-app.get('/admin/job-approval', (req, res) => {
+app.get('/admin/job-approval', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/admin/job-approval.html'));
 });
 
-app.get('/admin/job-management', (req, res) => {
+app.get('/admin/job-management', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/admin/job-management.html'));
 });
 

@@ -99,9 +99,43 @@ const handleGetJob = async (req, res) => {
 
 const handleUpdateJob = async (req, res) => {
   try {
-    const job = await jobService.updateJob(req.params.id, req.body);
-    res.json(job);
+    const jobId = Number(req.params.id);
+    const existingJob = await jobService.getJobById(jobId); // ambil data job lama
+
+    if (!existingJob) {
+      return res.status(404).json({ error: 'Job tidak ditemukan' });
+    }
+
+    let imagePath = existingJob.image;
+
+    // Jika ada gambar baru diunggah
+    if (req.file) {
+      // Hapus gambar lama jika ada
+      if (imagePath) {
+        const oldImagePath = path.join(__dirname, '..', '..', 'public', imagePath);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+
+      // Simpan path gambar baru
+      imagePath = path.join('uploads', req.file.filename);
+    }
+    console.log(req.body)
+    const updatedData = {
+      title: req.body.title,
+      location: req.body.location,
+      salary: req.body.salary ? Number(req.body.salary) : null,
+      type: req.body.type,
+      description: req.body.description,
+      image: imagePath,
+      updated_at: new Date()
+    };
+
+    const updatedJob = await jobService.updateJob(jobId, updatedData);
+    res.json(updatedJob);
   } catch (err) {
+    console.error('Error updating job:', err);
     res.status(500).json({ error: err.message });
   }
 };

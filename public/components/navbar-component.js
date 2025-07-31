@@ -49,8 +49,8 @@ class NavbarComponent extends HTMLElement {
                 </div>
             `
             : `
-                <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-900">Sign In</a>
-                <a href="/register" class="ml-4 text-sm font-medium text-white bg-custom-blue hover:bg-blue-700 px-4 py-2 rounded">Sign Up</a>
+            <a href="/contact-sales" class="ml-4 text-sm font-medium text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded">Hubungi Sales</a>
+            <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-900">Sign In</a>
             `;
 
         this.innerHTML = `

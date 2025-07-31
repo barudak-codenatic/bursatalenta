@@ -162,6 +162,7 @@ const login = async (req, res) => {
 
     // Simpan session user ID
     req.session.userId = user.id;
+    req.session.role = user.role;
 
     res.json({
       message: "Login berhasil",

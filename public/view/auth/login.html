@@ -249,9 +249,9 @@
                     localStorage.setItem('userRole', data.user.role);
                     
                     if (data.user.role === 'ADMIN') {
-                        window.location.href = '/admin-dashboard';
+                        window.location.href = '/admin/job-management';
                     } else {
-                        window.location.href = '/dashboard';
+                        window.location.href = '/';
                     }
                 } else {
                     // Show error message
@@ -341,7 +341,7 @@
                 const userRole = getUserRole();
                 // Redirect to appropriate dashboard if already logged in
                 if (userRole === 'ADMIN') {
-                    window.location.href = '/admin-dashboard';
+                    window.location.href = '/admin/job-management';
                 } else {
                     window.location.href = '/';
                 }
