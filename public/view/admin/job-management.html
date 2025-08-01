@@ -347,12 +347,12 @@
                 }
                 
                 // Use a default image if job.thumbnail is null or empty
-                const imageUrl = job.thumbnail ? '/uploads/' + job.thumbnail : '/assets/logo.png';
+                const imageUrl = job.image;
                 
                 row.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex-shrink-0 h-10 w-10">
-                            <img class="h-10 w-10 rounded-md object-cover" src="${imageUrl}" alt="${job.title || 'Job'}" onerror="this.src='/assets/logo.png'">
+                            <img class="h-10 w-10 rounded-md object-cover" src="${imageUrl}" alt="${job.title || 'Job'}">
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">

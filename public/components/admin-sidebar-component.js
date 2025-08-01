@@ -26,7 +26,7 @@ class AdminSidebarComponent extends HTMLElement {
         const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&color=7C3AED&background=EDE9FE`;
 
         this.innerHTML = `
-            <div class="w-64 bg-white shadow-sm min-h-screen">
+            <div class="w-64 bg-white shadow-sm h-screen sticky top-0">
                 <div class="p-6">
                     <!-- Profile Section -->
                     <div class="flex items-center space-x-3 mb-6">
