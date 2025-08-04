@@ -51,8 +51,6 @@ class AdminNavbarComponent extends HTMLElement {
                                 
                                 <!-- Dropdown Menu -->
                                 <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                                    <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
-                                    <hr class="my-1">
                                     <a href="/login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="logoutBtn">Sign Out</a>
                                 </div>
                             </div>

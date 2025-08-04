@@ -1,9 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('Seeding database...');
+
+  const hashedPassword = await bcrypt.hash('admin123', 10);
 
   // Create sample users
   const admin = await prisma.user.upsert({
@@ -11,7 +14,7 @@ async function main() {
     update: {},
     create: {
       email: 'admin@bursatalenta.com',
-      password: 'admin123', // In production, this should be hashed
+      password: hashedPassword, // Password is now hashed
       name: 'Admin User',
       role: 'ADMIN'
     }

@@ -42,7 +42,6 @@ class NavbarComponent extends HTMLElement {
 
                     <div class="user-dropdown hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                         <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
-                        <a href="/contact-sales" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Hubungi Sales</a>
                         <hr class="my-1">
                         <button id="sign-out-btn" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Out</button>
                     </div>
@@ -64,8 +63,11 @@ class NavbarComponent extends HTMLElement {
 
                         <!-- Navigation Links -->
                         <div class="flex items-center space-x-8">
-                            <a href="/" class="nav-link ${activePage === 'dashboard' ? 'text-custom-blue border-b-2 border-custom-blue' : 'text-gray-500 hover:text-gray-700'} px-3 py-2 text-sm font-medium">
+                            <a href="/" class="nav-link ${activePage === '' ? 'text-custom-blue border-b-2 border-custom-blue' : 'text-gray-500 hover:text-gray-700'} px-3 py-2 text-sm font-medium">
                                 Home
+                            </a>
+                            <a href="/dashboard" class="nav-link ${activePage === 'dashboard' ? 'text-custom-blue border-b-2 border-custom-blue' : 'text-gray-500 hover:text-gray-700'} px-3 py-2 text-sm font-medium">
+                                Lowongan Pekerjaan
                             </a>
                             ${isLoggedIn ? `
                             <a href="/my-applications" class="nav-link ${activePage === 'my-applications' ? 'text-custom-blue border-b-2 border-custom-blue' : 'text-gray-500 hover:text-gray-700'} px-3 py-2 text-sm font-medium">

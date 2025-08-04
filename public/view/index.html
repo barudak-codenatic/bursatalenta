@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bursa Talenta - Platform Freelance Indonesia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#6366F1'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/assets/logo.png" alt="Bursa Talenta Logo" class="h-12">
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-gray-700 hover:text-primary">Home</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div id="auth-buttons" class="flex space-x-2">
+                    <!-- Buttons will be populated by JavaScript -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <img src="/assets/image.png" 
+         alt="Hero Image" class="w-full object-cover">
+
+    <!-- Latest Jobs Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-3xl font-bold text-center text-gray-900 mb-12">Lowongan Terbaru</h3>
+            
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-8">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <p class="mt-2 text-gray-600">Memuat lowongan...</p>
+            </div>
+
+            <!-- Jobs Grid -->
+            <div id="jobs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+                <!-- Jobs will be populated here -->
+            </div>
+
+            <!-- No Jobs Message -->
+            <div id="no-jobs" class="text-center py-8 hidden">
+                <p class="text-gray-600">Belum ada lowongan tersedia saat ini.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Bursa Talenta</h4>
+                    <p class="text-gray-400 mb-4">Platform terbaik untuk mengembangkan keterampilan dan menemukan peluang kerja freelance di Indonesia.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-white">Twitter</a>
+                        <a href="#" class="text-gray-400 hover:text-white">Instagram</a>
+                        <a href="#" class="text-gray-400 hover:text-white">LinkedIn</a>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400">© 2025 Bursa Talenta. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">Syarat & Ketentuan</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Kebijakan Privasi</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        function isLoggedIn() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+
+        // Get current user data
+        function getCurrentUser() {
+            const userData = localStorage.getItem('currentUser');
+            return userData ? JSON.parse(userData) : null;
+        }
+
+        // Update auth buttons based on login status
+        function updateAuthButtons() {
+            const authButtons = document.getElementById('auth-buttons');
+            
+            if (isLoggedIn()) {
+                const user = getCurrentUser();
+                authButtons.innerHTML = `
+                    <a href="/contact-sales" class="bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Hubungi Sales
+                    </a>
+                    <button onclick="goToDashboard()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition duration-300">
+                        Dashboard
+                    </button>
+                `;
+            } else {
+                authButtons.innerHTML = `
+                    <a href="/contact-sales" class="bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Hubungi Sales
+                    </a>
+                    <button onclick="goToLogin()" class="text-primary border border-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-white transition duration-300">
+                        Masuk
+                    </button>
+                    <button onclick="goToRegister()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition duration-300">
+                        Daftar
+                    </button>
+                `;
+            }
+        }
+
+        // Navigation functions
+        function goToLogin() {
+            // Replace with your login page URL
+            window.location.href = '/login';
+        }
+
+        function goToRegister() {
+            // Replace with your register page URL
+            window.location.href = '/register';
+        }
+
+        function goToDashboard() {
+            // Replace with your dashboard URL
+            window.location.href = '/dashboard';
+        }
+
+        // Handle apply button click
+        function handleApply(jobId) {
+            if (!isLoggedIn()) {
+                // Redirect to login if not logged in
+                goToLogin();
+            } else {
+                // Redirect to dashboard or application page
+                goToDashboard();
+            }
+        }
+
+        // Format salary
+        function formatSalary(salary) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(salary);
+        }
+
+        // Fetch and display jobs
+        async function loadJobs() {
+            try {
+                const response = await fetch('/api/jobs');
+                const data = await response.json();
+                console.log(data);
+                
+                const jobsGrid = document.getElementById('jobs-grid');
+                const loading = document.getElementById('loading');
+                const noJobs = document.getElementById('no-jobs');
+                
+                loading.classList.add('hidden');
+                
+                // Check if data is an array directly or has a jobs property
+                const jobs = Array.isArray(data) ? data : (data.jobs || []);
+                
+                if (jobs && jobs.length > 0) {
+                    // Show only first 3 jobs
+                    const jobsToShow = jobs.slice(0, 3);
+                    
+                    jobsGrid.innerHTML = jobsToShow.map(job => `
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                            <img src="${job.image || 'https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'}" 
+                                 alt="${job.title}" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-xl font-semibold text-gray-900">${job.title}</h4>
+                                    <span class="text-sm bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-full">${job.type}</span>
+                                </div>
+                                <p class="text-gray-600 mb-2">${job.company_name}</p>
+                                <p class="text-gray-600 mb-2">${job.location}</p>
+                                <p class="text-lg font-semibold text-primary mb-3">${formatSalary(job.salary)}</p>
+                                <p class="text-gray-700 mb-4 line-clamp-3">${job.description}</p>
+                                <button onclick="handleApply(${job.id})" 
+                                        class="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-secondary transition duration-300 font-medium">
+                                    Lamar Sekarang
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    jobsGrid.classList.remove('hidden');
+                } else {
+                    noJobs.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+                const loading = document.getElementById('loading');
+                const noJobs = document.getElementById('no-jobs');
+                
+                loading.classList.add('hidden');
+                noJobs.innerHTML = '<p class="text-red-600">Gagal memuat lowongan. Silakan coba lagi nanti.</p>';
+                noJobs.classList.remove('hidden');
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAuthButtons();
+            loadJobs();
+        });
+
+        // Add CSS for line clamp
+        const style = document.createElement('style');
+        style.textContent = `
+            .line-clamp-3 {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

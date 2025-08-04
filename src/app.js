@@ -6,6 +6,7 @@ const jobRoutes = require('./routes/jobRoutes');
 const applicantRoutes = require('./routes/applicantRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const isAdmin = require('./middleware/isAdmin');
+const isUser = require('./middleware/isUser');
 
 const app = express();
 
@@ -26,8 +27,12 @@ app.use('/api/applicants', applicantRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 // Untuk akses halaman HTML
-app.get('/', (req, res) => {
+app.get('/dashboard', isUser, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/dashboard.html'));
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/view/index.html'));
 });
 
 app.get('/login', (req, res) => {
@@ -41,11 +46,6 @@ app.get('/register', (req, res) => {
 app.get('/forgot-password', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/auth/forgot-password.html'));
 });
-
-app.get('/admin-register', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/view/auth/provider-register.html'));
-});
-
 // Rute dashboard telah dihapus karena tidak digunakan lagi
 
 app.get('/admin/add-job', isAdmin, (req, res) => {
@@ -76,11 +76,11 @@ app.get('/job-detail', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/job-detail.html'));
 });
 
-app.get('/profile', (req, res) => {
+app.get('/profile', isUser, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/profile.html'));
 });
 
-app.get('/my-applications', (req, res) => {
+app.get('/my-applications', isUser, (req, res) => {
   res.sendFile(path.join(__dirname, '../public/view/my-applications.html'));
 });
 
